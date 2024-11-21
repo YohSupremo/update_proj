@@ -1,0 +1,3343 @@
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <fstream>
+#include <cstdlib>
+#include <ctime>
+#include <windows.h>
+
+using namespace std;
+
+int wins = 0, lose = 0, hint = 0, add_life = 0, skip = 0, int_streak = 0, streak_claim = 0, streak_high = 0;
+string username, password;
+bool is_intro = 0, streak = 1, rewards1 = 1, rewards2 = 1, rewards3 = 1, rewards4 = 1, rewards5 = 1, rewards6 = 1, rewards7 = 1, rewards8 = 1;
+
+void cover(bool is_cover);
+void center(string to_center, bool w_design);
+bool register1(string user, string pass);
+bool login(string user, string pass);
+int termination();
+void center_padding(string name, bool border);
+void hide_word(char extract[], int word_size);
+void guess_right(string& word, char extract[], int word_size, char guess);
+void gameplay(string& word, char extract[], int word_size, int& lives, string category);
+void header_little(bool curtain);
+void loading_animation();
+void shop(int win, int bal_hint, int bal_life, int bal_skip);
+void order(string buy);
+void header_littlev2();
+void play_again();
+void hint_usage(string& word, char extract[], int word_size, int& hint);
+void lives_counter(int& lives, string category);
+void save_data(const string& username, int wins, int loses, int hints, int add_life, int skip, bool is_intro, int streak_high, int int_streak,
+    bool rewards1, bool rewards2, bool rewards3, bool rewards4, bool rewards5, bool rewards6, bool rewards7, bool rewards8);
+bool load_data(const string& username, int& wins, int& loses, int& hints, int& add_life, int& skip, bool& is_intro, int& streak_high, int& int_streak,
+    bool& rewards1, bool& rewards2, bool& rewards3, bool& rewards4, bool& rewards5, bool& rewards6, bool& rewards7, bool& rewards8);
+
+
+
+
+int main() {
+
+    bool error = false, invalid = false, exit = false;
+    int intro = 0;
+    bool validation = false, user_validate, proceed = false;
+    string pick;
+    char extract[50], buy, play_more;
+    int size, pieces = 0, multiplier = 0;
+    string category_store;
+    int is_ready;
+
+
+
+  
+
+    while (true) {
+
+       
+        
+   
+        
+
+        
+
+        
+
+
+
+
+
+     
+        cover(true);
+        center("Press Enter to Start the Game!", true);
+      
+
+
+        if (error == true) {
+
+            cout << "\n";
+            center(" Invalid Input, Please Try Again", false);
+            cout << "\n";
+
+        }
+
+        if (cin.get() != '\n') {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            error = true;
+            system("cls");
+            continue;
+        }
+        else {
+            error = false;
+            system("cls");
+        }
+
+        while (true) {
+
+            cover(true);
+
+            cout << "\n";
+            center("Please Enter the Designated Number", true);
+            cout << "\n";
+            center(" 1. Register  \n ", false);
+            center("2. User Login \n ", false);
+            center("0. Exit Game \n ", false);
+
+            if (invalid == true) {
+                cin.clear();
+                cin.ignore();
+                cout << "\n";
+                center(" Invalid Input, Please Try Again", false);
+                cout << "\n";
+            }
+
+            cout << "\n" << setw(42) << "" << "Choice: ";
+            cin >> intro;
+
+            if (cin.fail() || cin.peek() != '\n' || intro != 0 && intro != 1 && intro != 2) {
+                invalid = true;
+                system("cls");
+                continue;
+            }
+            else {
+                invalid = false;
+                system("cls");
+
+                if (intro == 0) {
+                    cin.ignore(1000, '\n');
+                    break;
+                }
+            }
+
+
+
+            if (intro == 1) {
+
+                system("cls");
+                cin.ignore(1000, '\n');
+
+                while (true) {
+
+                    cover(true);
+                    center_padding(" Type '0' to return", true);
+                    cout << "\n" << setw(42) << "" << "Username: ";
+                    getline(cin, username);
+
+                    if (username.empty()) {
+
+                        cout << "\n";
+                        center("Snap! A Username Cannot be Empty", true);
+                        cout << "\n";
+                        center("Press Enter to Clear", false);
+
+                        termination();
+
+                        continue;
+
+                    }
+                    else if (username == "0") {
+
+                        system("cls");
+                        break;
+
+
+
+                    }
+                    else {
+
+
+                        cout << "\n" << setw(42) << "" << "Password: ";
+                        getline(cin, password);
+
+                        if (password.empty()) {
+
+                            cout << "\n";
+                            center("Snap! A Password Cannot be Empty", true);
+                            cout << "\n";
+                            center("Press Enter to Clear", false);
+                            termination();
+
+                            continue;
+                        }
+                        else {
+                            user_validate = register1(username, password);
+
+                            if (user_validate == false) {
+                                cout << "\n";
+                                center("Username Already Taken", true);
+                                center("Press Enter to Clear", false);
+                                cout << "\n";
+                                termination();
+                                continue;
+                            }
+                            else if (user_validate == true) {
+                                cout << "\n";
+                                center("Press Enter to Proceed", false);
+                                cin.get();
+                                exit = true;
+                                break;
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+
+            if (intro == 2) {
+                system("cls");
+                cin.ignore(1000, '\n');
+
+                while (true) {
+
+                    cover(true);
+                    center_padding(" Type '0' to return", true);
+                    cout << "\n" << setw(42) << "" << "Username: ";
+                    getline(cin, username);
+
+
+                    if (username.empty()) {
+
+                        cout << "\n";
+                        center("Snap! A Username Cannot be Empty", true);
+                        cout << "\n";
+                        center("Press Enter to Clear", false);
+
+                        termination();
+
+                        continue;
+
+                    }
+                    else if (username == "0") {
+
+                        system("cls");
+                        break;
+
+
+                    }
+                    else {
+
+                        cout << "\n" << setw(42) << "" << "Password: ";
+                        getline(cin, password);
+
+                        if (password.empty()) {
+                            cout << "\n";
+                            center("Snap! A Password Cannot be Empty", true);
+                            cout << "\n";
+                            center("Press Enter to Clear", false);
+
+                            termination();
+
+                            continue;
+                        }
+                        else {
+
+                            validation = login(username, password);
+
+                            if (validation == false) {
+
+                                termination();
+
+                            }
+                            else if (validation == true) {
+                            
+                                break;
+                            }
+                        }
+
+                    }
+
+
+                }
+
+            }
+
+            if (exit == true || validation == true) {
+
+                break;
+            }
+
+        }
+
+        if (exit == true || validation == true) {
+            break;
+        }
+
+    
+    }
+
+    system("cls");
+
+
+    load_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+
+    //hangman game;
+
+    if (is_intro == 0) {
+
+
+
+        header_little(false);
+        cout << "\n\n";
+
+        cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+        cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+        cout << setw(30) << "" << "| |" << setw(54) << "" << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << " ------    .-------------." << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << " |    |   / Hello, World! \\" << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << " |    O  <  Let's Play -   |" << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << " |   /|\\  \\    HangMan    /" << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << " |   / \\   '-------------'" << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << " | " << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << "  ------" << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << " |      |" << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << "  ------" << "| |" << endl;
+        cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+        cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+        cout << setw(25) << "" << "     | |                                                      | | " << endl;
+
+
+
+        Sleep(3000);
+
+
+        system("cls");
+
+
+        header_little(false);
+        cout << "\n\n";
+
+        cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+        cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+        cout << setw(30) << "" << "| |" << setw(54) << "" << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << "         " << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << "         " << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << "       .-------------.   " << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << "      *   But before  *   " << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << "     *   that, choose  *   " << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << " 0  <      from the     | " << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << "\\|/  *    following!   * " << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << " |    '---------------' " << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << "/ \\     " << "| |" << endl;
+        cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+        cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+        cout << setw(25) << "" << "     | |                                                      | | " << endl;
+
+
+
+
+        Sleep(3000);
+
+
+        system("cls");
+       
+    }
+    
+    is_intro = 1;
+    save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+    
+
+    while (true) {
+
+        char info_button;
+
+    header_little(true);
+
+    center_padding(" Type the Designated Number to Select", true);
+    cout << left << setw(51) << "              - - - - - - - - - - - -       " << "  ------------- " << "                                 " << endl;
+    cout << left << setw(50) << "            '    You can access       '     " << "  < 1. P L A Y  > " << "              '  '  '  '  '  '  " << endl;
+    cout << left << setw(51) << "   0      <  streak rewards by typing  '" << "  -------------" << "              '                  '  " << endl;
+    cout << left << setw(51) << " \\ | /      '          '3'            '     " << "  ------------- " << "            '  Can you do it?    >     0  \\ " << endl;
+    cout << left << setw(50) << "   |          - - - - - - - - - - - -     " << "  < 2. S H O P  > " << "            '                  '  \\ _ | __ " << endl;
+    cout << left << setw(51) << "  / \\                  |                " << "  -------------" << "                '  '  '  '  '  '        |  " << endl;
+    cout << left << setw(51) << "             - - - - - - - - - - - - -  " << "  ------------- " << "                                      / \\ " << endl;
+    cout << left << setw(50) << "            |About the Game? Press '4'| " << "  < 0. E X I T  > " << "                                         " << endl;
+    cout << left << setw(51) << "             - - - - - - - - - - - - -   " << "  -------------" << "" << endl;
+
+
+
+
+    //code to display play button, shop, info about the game, and to log-out.
+   
+   
+
+    cout << setw(58) << "" << ": ";
+
+    cin >> is_ready;
+
+ 
+
+    if (cin.fail() || cin.peek() != '\n' || is_ready != 0 && is_ready != 1 && is_ready != 2 && is_ready != 3 && is_ready != 4) {
+
+        cin.clear();
+        cin.ignore(1000, '\n');
+        cout << "\n";
+        center_padding("Invalid Input, Please Try Again", false);
+        Sleep(1000);
+        system("cls");
+        continue;
+
+    }
+
+    system("cls");
+    if (is_ready == 1) {
+
+        cover(true);
+
+        loading_animation();
+
+
+
+
+     
+        system("cls");
+        cout << ".  . .    .         .         .      .         .      .    .     .   .     .         .   .     .    .    ..         ." << endl;
+        cout << "     .      ..     .    .      .       .       ..        .    .            .       .    .    ..       k. .   ." << endl;
+        cout << "   .  * .          *         .         .  *      .         .        .        .   *    .      . .      kkk. .   * ." << endl;
+        cout << ". . .    .        .       .      .           .  *         *           .         .      .     .         kkkkk .   .  . " << endl;
+        cout << "  . .   .       .    *           .      .           .     .         .     *     .     .    .      .     kkkkkk  . * ." << endl;
+        cout << ". . ..   .    .  .     *    .     .    ..   .    .    .    .   . .*  .     .   .   .   ...    .     .   kkkkkk .  .   " << endl;
+        cout << " .   .         .   .         .    .             .    ..       .    .       .          .     .     .  .  kkkkk . .     . " << endl;
+        cout << ".  .    * .   .      ..     .   .     .  *  .    .        .  .     .    .       .   *    .   .        kkkkk .  *    " << endl;
+        cout << " . . . . .  . .       .  . .    .   .      .       .    *    .      .    .     .      .    .     .   kkk  .   .   .   ." << endl;
+        cout << "   .           .   *       .        ..         .    .       .      .    .       .     .    .     .  .k  .  .        ." << endl;
+        cout << setw(10) << ". *  ." << setw(100) << setfill('-') << "" << setfill(' ') << " .   *  ." << endl;
+        cout << setw(9) << " .   . . " << "/" << setw(100) << "" << "\\" << "     . ." << endl;
+        cout << setw(8) << "     * " << "/" << left << setw(102) << "                        You are in your dream, seeing a man who will be hanged" << "\\" << " .  . " << endl;
+        cout << setw(7) << " .  ." << "/" << left << setw(104) << "" << "\\" << " *   .." << endl;
+        cout << setw(7) << "" << setw(106) << setfill('-') << "" << setfill(' ') << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                                * * * * * * *             " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                               *   zzzz....  * " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                                * * * * * * *             " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                     ----------.--         .        -------                  " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                    |      0  .   |         * *    | HELP! |            " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                     ------|------        *     * . -------          " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                    |    / | \\    |     *    0 .  *                    " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                    |      |      |    *    /|\\    *                   " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                    |     / \\     |    *     |     *                 " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                    |             |     *   / \\   *                       " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                    |_____________|       *  *  *                 " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "" << "|" << endl;
+        cout << setw(15) << "" << setw(87) << setfill('-') << "" << setfill(' ') << endl;
+   
+        Sleep(3000);
+        system("cls");
+
+
+
+        cout << ".  . .    .         .         .      .         .      .    .     .   .     .         .   .     .    .    ..         ." << endl;
+        cout << "     .      ..     .    .      .       .       ..        .    .            .       .    .    ..       k. .   ." << endl;
+        cout << "   .  * .          *         .         .  *      .         .        .        .   *    .      . .      kkk. .   * ." << endl;
+        cout << ". . .    .        .       .      .           .  *         *           .         .      .     .         kkkkk .   .  . " << endl;
+        cout << "  . .   .       .    *           .      .           .     .         .     *     .     .    .      .     kkkkkk  . * ." << endl;
+        cout << ". . ..   .    .  .     *    .     .    ..   .    .    .    .   . .*  .     .   .   .   ...    .     .   kkkkkk .  .   " << endl;
+        cout << " .   .         .   .         .    .             .    ..       .    .       .          .     .     .  .  kkkkk . .     . " << endl;
+        cout << ".  .    * .   .      ..     .   .     .  *  .    .        .  .     .    .       .   *    .   .        kkkkk .  *    " << endl;
+        cout << " . . . . .  . .       .  . .    .   .      .       .    *    .      .    .     .      .    .     .   kkk  .   .   .   ." << endl;
+        cout << "   .           .   *       .        ..         .    .       .      .    .       .     .    .     .  .k  .  .        ." << endl;
+        cout << setw(10) << ". *  ." << setw(100) << setfill('-') << "" << setfill(' ') << " .   *  ." << endl;
+        cout << setw(9) << " .   . . " << "/" << setw(100) << "" << "\\" << "     . ." << endl;
+        cout << setw(8) << "     * " << "/" << left << setw(102) << "                               You then saw a passcode with categories..." << "\\" << " .  . " << endl;
+        cout << setw(7) << " .  ." << "/" << left << setw(104) << "" << "\\" << " *   .." << endl;
+        cout << setw(7) << "" << setw(106) << setfill('-') << "" << setfill(' ') << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                                * * * * * * *             " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                               *   zzzz....  * " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                                * * * * * * *             " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                     ----------.--         .        -------               " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                    |      0  .   |         * *    | HELP! | .            " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                     ------|------        *     * . -------     .         " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                    |    / | \\    |     *    0 .  *            * *       " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                    |      |      |    *    /|\\    *         *     *     " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                    |     / \\     |    *     |     *        * _____ *    " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                    |             |     *   / \\   *          *     *     " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                    |_____________|       *  *  *              * *        " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "" << "|" << endl;
+        cout << setw(15) << "" << setw(87) << setfill('-') << "" << setfill(' ') << endl;
+
+
+        Sleep(3000);
+        system("cls");
+        cout << ".  . .    .         .         .      .         .      .    .     .   .     .         .   .     .    .    ..         ." << endl;
+        cout << "     .      ..     .    .      .       .       ..        .    .            .       .    .    ..       k. .   ." << endl;
+        cout << "   .  * .          *         .         .  *      .         .        .        .   *    .      . .      kkk. .   * ." << endl;
+        cout << ". . .    .        .       .      .           .  *         *           .         .      .     .         kkkkk .   .  . " << endl;
+        cout << "  . .   .       .    *           .      .           .     .         .     *     .     .    .      .     kkkkkk  . * ." << endl;
+        cout << ". . ..   .    .  .     *    .     .    ..   .    .    .    .   . .*  .     .   .   .   ...    .     .   kkkkkk .  .   " << endl;
+        cout << " .   .         .   .         .    .             .    ..       .    .       .          .     .     .  .  kkkkk . .     . " << endl;
+        cout << ".  .    * .   .      ..     .   .     .  *  .    .        .  .     .    .       .   *    .   .        kkkkk .  *    " << endl;
+        cout << " . . . . .  . .       .  . .    .   .      .       .    *    .      .    .     .      .    .     .   kkk  .   .   .   ." << endl;
+        cout << "   .           .   *       .        ..         .    .       .      .    .       .     .    .     .  .k  .  .        ." << endl;
+        cout << setw(10) << ". *  ." << setw(100) << setfill('-') << "" << setfill(' ') << " .   *  ." << endl;
+        cout << setw(9) << " .   . . " << "/" << setw(100) << "" << "\\" << "     . ." << endl;
+        cout << setw(8) << "     * " << "/" << left << setw(102) << "                                       Guess the code to save him!      " << "\\" << " .  . " << endl;
+        cout << setw(7) << " .  ." << "/" << left << setw(104) << "" << "\\" << " *   .." << endl;
+        cout << setw(7) << "" << setw(106) << setfill('-') << "" << setfill(' ') << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                                * * * * * * *             " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                               *   zzzz....  * " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                                * * * * * * *             " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                     ----------.--         .        -------               * *        " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                    |      0  .   |         * *    | HELP! | .          *     *      " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                     ------|------        *     * . -------     .      * HELLO *     " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                    |    / | \\    |     *    0 .  *            * *      *     *     " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                    |      |      |    *    /|\\    *         *     *      * *       " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                    |     / \\     |    *     |     *        * _____ *   .           " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                    |             |     *   / \\   *          *     *  .             " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "                    |_____________|       *  *  *              * *                   " << "|" << endl;
+        cout << setw(15) << "" << "|" << left << setw(85) << "" << "|" << endl;
+        cout << setw(15) << "" << setw(87) << setfill('-') << "" << setfill(' ') << endl;
+  
+        Sleep(3000);
+        system("cls");
+
+        cin.clear();
+        cin.ignore(1000, '\n');
+        while (true) {
+
+            string category[] = { " Country", " Vegetable", " Fruit", " Luzon Province", " Animals", " Famous Brands", " Car Brands", " Greek Gods and Goddesses"};
+            int s_category = sizeof(category) / sizeof(category[0]);
+            char letter;
+            int lives = 6;
+            int random = time(0);
+
+            srand(static_cast<unsigned int> (random));
+
+            int random_active = rand() % s_category;
+
+            category_store = category[random_active];
+            
+            cover(true);
+            cout << "\n";
+            center_padding(" Randomizing Categories...", false);
+            Sleep(1000);
+
+       
+
+            if (category[random_active] == " Country") {
+                
+                system("cls");
+                cover(true);
+                cout << "\n";
+                center_padding(" You Just Pick Country", false);
+                Sleep(2000);
+
+                string country[] = { "SWITZERLAND", "AMERICA", "FINLAND", "CHINA", "JAPAN", "KOREA", "PHILIPPINES", "UKRAINE", "GERMANY", "FRANCE", "CANADA",
+                "INDONESIA", "MEXICO", "POLAND", "ITALY", "SPAIN", "TURKEY", "PORTUGAL", "GREECE", "VIETNAM", "BELGIUM", "NORWAY", "HUNGARY", "PERU", "CROATIA", "IRAQ",
+                "PAKISTAN", "COLOMBIA", "JAMAICA", "SERBIA", "ISRAEL", "VENEZUELA", "AUSTRIA", "SLOVAKIA", "DENMARK", "ALBANIA", "EGYPT", "LITHUANIA", "MONGOLIA", "QATAR" };
+                int s_country = sizeof(country) / sizeof(country[0]);
+
+                random_active = rand() % s_country;
+
+                system("cls");
+                cover(true);
+                cout << "\n";
+                center_padding(" Randomizing Countries, Please Wait... ", false);
+                Sleep(1000);
+
+                pick = country[random_active];
+
+                size = pick.length();
+              
+                cout << "\n\n";
+     
+                center_padding(" Press Enter to Start", true);
+
+                if (cin.get() == '\n') {
+
+                    system("cls");
+
+                    hide_word(extract, size);
+
+                    gameplay(pick, extract, size, lives, category_store);
+                    save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+
+
+                    while (true) {
+
+                        system("cls");
+                        header_little(true);
+                        center_padding (" Press 'E' to Return at Main Menu", false);
+                        cout << "\n";
+                        play_again();
+
+                        cout << setw(55) << "" << ": ";
+                        cin >> play_more;
+
+                        play_more = toupper(play_more);
+
+                        if (cin.fail() || !isalpha(play_more) || cin.peek() != '\n' || play_more != 'Y' && play_more != 'N' && play_more != 'E') {
+
+                            center_padding("Invalid Input, Please Try Again", true);
+                            cin.clear();
+                            cin.ignore(1000, '\n');
+                            Sleep(500);
+                            continue;
+
+                        }
+
+
+                        if (play_more == 'Y' || play_more == 'YES') {
+
+                            system("cls");
+                            break;
+
+                        }
+                        else if (play_more == 'N' || play_more == 'NO') {
+
+                            system("cls");
+                            cover(true);
+                            center_padding(" by: Kelly Laurence Q. Roduta - BSIT-S-1A", false);
+                            save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                            cout << "\n\n\n\n";
+                            return 0;
+
+                        }  else if (play_more == 'E' || play_more == 'EXIT') {
+
+                            break;
+
+                        }
+                       
+
+                    }
+
+                }
+
+
+
+
+
+
+            }
+            else if (category[random_active] == " Vegetable") {
+
+                system("cls");
+                cover(true);
+                cout << "\n";
+                center_padding(" You Just Pick Vegetable", false);
+                Sleep(2000);
+
+                string vegetable[] = { "CABBAGE", "EGGPLANT","CARROT", "COURGETTE", "ARTICHOKE", "BEET", "BROCOLLI","CAULIFLOWER", "CUCUMBER", "LETTUCE", "MUSHROOM",
+                "ONION", "PEA", "PEPPER", "POTATO", "PUMPKIN", "RADISH", "ZUCCHINI", "CELERY", "TOMATO" };
+                int s_vegetable = sizeof(vegetable) / sizeof(vegetable[0]);
+
+                random_active = rand() % s_vegetable;
+
+                system("cls");
+                cover(true);
+                cout << "\n";
+                center_padding(" Randomizing Vegetables, Please Wait... ", false);
+                Sleep(1000);
+
+                pick = vegetable[random_active];
+                size = pick.length();
+
+                cout << "\n\n";
+            
+                center_padding(" Press Enter to Start", true);
+
+                if (cin.get() == '\n') {
+
+                    system("cls");
+
+                    hide_word(extract, size);
+
+                    gameplay(pick, extract, size, lives, category_store);
+                    save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+
+                    while (true) {
+
+                        system("cls");
+                        header_little(true);
+                        center_padding(" Press 'E' to Return at Main Menu", false);
+                        cout << "\n";
+                        play_again();
+
+                        cout << setw(55) << "" << ": ";
+                        cin >> play_more;
+
+                        play_more = toupper(play_more);
+
+
+                        if (cin.fail() || !isalpha(play_more) || cin.peek() != '\n' || play_more != 'Y' && play_more != 'N' && play_more != 'E') {
+
+                            center_padding("Invalid Input, Please Try Again", true);
+                            cin.clear();
+                            cin.ignore(1000, '\n');
+                            Sleep(500);
+                            continue;
+
+                        }
+
+                        if (play_more == 'Y' || play_more == 'YES') {
+
+
+                            system("cls");
+                            break;
+
+                        }
+                        else if (play_more == 'N' || play_more == 'NO') {
+
+                            system("cls");
+                            cover(true);
+                            center_padding(" by: Kelly Laurence Q. Roduta - BSIT-S-1A", false);
+                            save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                            cout << "\n\n\n\n";
+                            return 0;
+
+                        } else if (play_more == 'E' || play_more == 'EXIT') {
+
+                            break;
+
+                        }
+                      
+
+                    }
+                }
+
+
+
+
+            }
+            else if (category[random_active] == " Fruit") {
+
+                system("cls");
+                cover(true);
+                cout << "\n";
+                center_padding(" You Just Pick Fruit", false);
+                Sleep(2000);
+
+                string fruit[] = { "APPLE", "WATERMELON", "ORANGE", "PEAR", "STRAWBERRY", "GRAPES", "PLUM", "BLUEBERRY", "MANGO", "PAPAYA", "APRICOT", "MANDARIN", "BANANA", "GRAPEFRUIT",
+                    "LEMON", "LIME", "PINEAPPLE", "JACKFRUIT", "MELON", "COCONUT", "AVOCADO", "PEACH", "KIWI", "BLACKCURRANT", "CHERRY", "LYCHEE", "NECTARINE", "BLACKBERRY", "RASPBERRY" };
+                int s_fruit = sizeof(fruit) / sizeof(fruit[0]);
+
+                random_active = rand() % s_fruit;
+
+                system("cls");
+                cover(true);
+                cout << "\n";
+                center_padding(" Randomizing Fruit, Please Wait... ", false);
+                Sleep(1000);
+
+                pick = fruit[random_active];
+                size = pick.length();
+
+                cout << "\n\n";
+               
+                center_padding(" Press Enter to Start", true);
+
+                if (cin.get() == '\n') {
+
+                    system("cls");
+
+                    hide_word(extract, size);
+
+                    gameplay(pick, extract, size, lives, category_store);
+                    save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+
+                    while (true) {
+
+                        system("cls");
+                        header_little(true);
+                        center_padding(" Press 'E' to Return at Main Menu", false);
+                        cout << "\n";
+                        play_again();
+
+                        cout << setw(55) << "" << ": ";
+                        cin >> play_more;
+
+                        play_more = toupper(play_more);
+
+
+                        if (cin.fail() || !isalpha(play_more) || cin.peek() != '\n' || play_more != 'Y' && play_more != 'N' && play_more != 'E') {
+
+                            center_padding("Invalid Input, Please Try Again", true);
+                            cin.clear();
+                            cin.ignore(1000, '\n');
+                            Sleep(500);
+                            continue;
+
+                        }
+
+                        if (play_more == 'Y' || play_more == 'YES') {
+
+
+                            system("cls");
+                            break;
+
+                        }
+                        else if (play_more == 'N' || play_more == 'NO') {
+
+                            system("cls");
+                            cover(true);
+                            center_padding(" by: Kelly Laurence Q. Roduta - BSIT-S-1A", false);
+                            save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                            cout << "\n\n\n\n";
+                            return 0;
+
+                        } else if (play_more == 'E' || play_more == 'EXIT') {
+
+                            break;
+
+                        }
+                        
+
+                    }
+
+
+                }
+
+
+
+
+
+
+            }
+            else if (category[random_active] == " Luzon Province") {
+
+                system("cls");
+                cover(true);
+                cout << "\n";
+                center_padding(" You Just Pick Luzon Province", false);
+                Sleep(2000);
+
+                string l_province[] = { "BENGUET" , "APAYAO", "KALINGA", "ABRA", "IFUGAO", "PANGASINAN", "CAGAYAN", "ISABELA", "QUIRINO", "BATANES", "TARLAC", "ZAMBALES", "PAMPANGA", "AURORA",
+                    "BULACAN", "BATAAN", "RIZAL", "LAGUNA", "CAVITE", "BATANGAS", "QUEZON", "PALAWAN", "MARINDUQUE", "ALBAY", "MASBATE", "SORSOGON", "CATANDUANES" };
+                int s_lprovince = sizeof(l_province) / sizeof(l_province[0]);
+
+                random_active = rand() % s_lprovince;
+
+                system("cls");
+                cover(true);
+                cout << "\n";
+                center_padding(" Randomizing Luzon Provinces, Please Wait... ", false);
+                Sleep(1000);
+
+                pick = l_province[random_active];
+
+                size = pick.length();
+
+                cout << "\n\n";
+       
+                center_padding(" Press Enter to Start", true);
+
+
+                if (cin.get() == '\n') {
+
+                    system("cls");
+
+                    hide_word(extract, size);
+
+                    gameplay(pick, extract, size, lives, category_store);
+                    save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+
+                    while (true) {
+
+                        system("cls");
+                        header_little(true);
+                        center_padding(" Press 'E' to Return at Main Menu", false);
+                        cout << "\n";
+                        play_again();
+
+
+                        cout << setw(55) << "" << ": ";
+                        cin >> play_more;
+
+                        play_more = toupper(play_more);
+
+                        if (cin.fail() || !isalpha(play_more) || cin.peek() != '\n' || play_more != 'Y' && play_more != 'N' && play_more != 'E') {
+
+                            center_padding("Invalid Input, Please Try Again", true);
+                            cin.clear();
+                            cin.ignore(1000, '\n');
+                            Sleep(500);
+                            continue;
+
+                        }
+
+                        if (play_more == 'Y' || play_more == 'YES') {
+
+
+                            system("cls");
+                            break;
+
+                        }
+                        else if (play_more == 'N' || play_more == 'NO') {
+
+                            system("cls");
+                            cover(true);
+                            center_padding(" by: Kelly Laurence Q. Roduta - BSIT-S-1A", false);
+                            save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                            cout << "\n\n\n\n";
+                            return 0;
+
+                        } else if (play_more == 'E' || play_more == 'EXIT') {
+
+                            break;
+
+                        }
+                        
+                        
+
+
+                    }
+
+                }
+
+
+
+
+
+            }
+            else if (category[random_active] == " Animals") {
+
+                system("cls");
+                cover(true);
+                cout << "\n";
+                center_padding(" You Just Pick Animals", false);
+                Sleep(2000);
+
+                string animals[] = { "OWL", "HARE", "FOX", "LIZARD", "DOG", "EAGLE", "GORILLA", "ELEPHANT", "ROOSTER", "CAT", "FLAMINGO", "PENGUIN", "CAPYBARA", "SHARK", "DONKEY", "HORSE", "CAMEL", "CATERPILLAR",
+                "CARACAL", "BUTTERFLY", "TOAD", "ANTELOPES", "COW", "DEER", "MOTH", "KOALA", "KANGAROO", "CHIMPANZEE", "CROCODILE", "BEAR", "LEOPARD", "SHEEP", "ZEBRA", "GOOSE", "LADYBUG", "ALLIGATOR", "IGUANA",
+                "LION", "OSTRICH", "PEACOCK", "PIG", "TURTLE", "HIPPOPOTAMUS", "WHALE", "BABOON", "BEETLE", "RABBIT", "OTTER", "RHINOCEROS" };
+                int s_animals = sizeof(animals) / sizeof(animals[0]);
+
+                random_active = rand() % s_animals;
+
+                system("cls");
+                cover(true);
+                cout << "\n";
+                center_padding(" Randomizing Animals, Please Wait... ", false);
+                Sleep(1000);
+
+                pick = animals[random_active];
+
+                size = pick.length();
+
+                cout << "\n\n";
+
+                center_padding(" Press Enter to Start", true);
+
+                if (cin.get() == '\n') {
+
+                    system("cls");
+
+                    hide_word(extract, size);
+
+                    gameplay(pick, extract, size, lives, category_store);
+                    save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+
+                    while (true) {
+
+                        system("cls");
+                        header_little(true);
+                        center_padding(" Press 'E' to Return at Main Menu", false);
+                        cout << "\n";
+                        play_again();
+
+
+                        cout << setw(55) << "" << ": ";
+                        cin >> play_more;
+
+                        play_more = toupper(play_more);
+
+                        if (cin.fail() || !isalpha(play_more) || cin.peek() != '\n' || play_more != 'Y' && play_more != 'N' && play_more != 'E') {
+
+                            center_padding("Invalid Input, Please Try Again", true);
+                            cin.clear();
+                            cin.ignore(1000, '\n');
+                            Sleep(500);
+                            continue;
+
+                        }
+
+                        if (play_more == 'Y' || play_more == 'YES') {
+
+
+                            system("cls");
+                            break;
+
+                        }
+                        else if (play_more == 'N' || play_more == 'NO') {
+
+                            system("cls");
+                            cover(true);
+                            center_padding(" by: Kelly Laurence Q. Roduta - BSIT-S-1A", false);
+                            save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                            cout << "\n\n\n\n";
+                            return 0;
+
+                        }
+                        else if (play_more == 'E' || play_more == 'EXIT') {
+
+                            break;
+
+                        }
+
+
+
+
+                    }
+
+                }
+
+
+
+
+            }
+            else if (category[random_active] == " Famous Brands") {
+
+
+                system("cls");
+                cover(true);
+                cout << "\n";
+                center_padding(" You Just Pick Famous Brands", false);
+                Sleep(2000);
+
+                string f_brands[] = { "GUCCI", "PRADA", "NIKE", "DIOR", "CHANEL", "CARTIER", "FENDI", "CHLOE", "COACH", "VERSACE", "ROLEX", "BURBERRY", "BALENCIAGA", "VALENTINO", "JACQUEMUS", "GIVENCHY", "HERMES",
+                "MANGO", "BALMAIN", "BULGARI", "CELINE", "LACOSTE" };
+                int s_fbrands = sizeof(f_brands) / sizeof(f_brands[0]);
+
+                random_active = rand() % s_fbrands;
+
+                system("cls");
+                cover(true);
+                cout << "\n";
+                center_padding(" Randomizing Famous Brands, Please Wait... ", false);
+                Sleep(1000);
+
+                pick = f_brands[random_active];
+
+                size = pick.length();
+
+                cout << "\n\n";
+
+                center_padding(" Press Enter to Start", true);
+
+                if (cin.get() == '\n') {
+
+                    system("cls");
+
+                    hide_word(extract, size);
+
+                    gameplay(pick, extract, size, lives, category_store);
+                    save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+
+                    while (true) {
+
+                        system("cls");
+                        header_little(true);
+                        center_padding(" Press 'E' to Return at Main Menu", false);
+                        cout << "\n";
+                        play_again();
+
+
+                        cout << setw(55) << "" << ": ";
+                        cin >> play_more;
+
+                        play_more = toupper(play_more);
+
+                        if (cin.fail() || !isalpha(play_more) || cin.peek() != '\n' || play_more != 'Y' && play_more != 'N' && play_more != 'E') {
+
+                            center_padding("Invalid Input, Please Try Again", true);
+                            cin.clear();
+                            cin.ignore(1000, '\n');
+                            Sleep(500);
+                            continue;
+
+                        }
+
+                        if (play_more == 'Y' || play_more == 'YES') {
+
+
+                            system("cls");
+                            break;
+
+                        }
+                        else if (play_more == 'N' || play_more == 'NO') {
+
+                            system("cls");
+                            cover(true);
+                            center_padding(" by: Kelly Laurence Q. Roduta - BSIT-S-1A", false);
+                            save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                            cout << "\n\n\n\n";
+                            return 0;
+
+                        }
+                        else if (play_more == 'E' || play_more == 'EXIT') {
+
+                            break;
+
+                        }
+
+
+
+
+                    }
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            } else if (category[random_active] == " Car Brands") {
+
+
+                system("cls");
+                cover(true);
+                cout << "\n";
+                center_padding(" You Just Pick Car Brands", false);
+                Sleep(2000);
+
+                string car_brands[] = { "ZANELLA", "BOLWELL", "CHERY", "DACIA", "GINETTA", "KIA", "LAMBORGINI", "NISSAN", "PORSCHE", "TESLA", "VOLVO", "MASERATI", "JEEP", "FORD", "FERRARI", "TOYOTA", "HONDA",
+                "CHEVROLET", "SUZUKI", "BUGATTI", "BMW", "DAEWOO", "CITROEN", "MCLAREN", "AUDI",  "PONTIAC", "ISUZU", "CADILLAC", "VOLKSWAGEN", "CORVETTE", "FOTON", "HYUNDAI", "MAZDA", "FIAT"};
+                int s_car_brands = sizeof(car_brands) / sizeof(car_brands[0]);
+
+                random_active = rand() % s_car_brands;
+
+                system("cls");
+                cover(true);
+                cout << "\n";
+                center_padding(" Randomizing Car Brands, Please Wait... ", false);
+                Sleep(1000);
+
+                pick = car_brands[random_active];
+
+                size = pick.length();
+
+                cout << "\n\n";
+
+                center_padding(" Press Enter to Start", true);
+
+                if (cin.get() == '\n') {
+
+                    system("cls");
+
+                    hide_word(extract, size);
+
+                    gameplay(pick, extract, size, lives, category_store);
+                    save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+
+                    while (true) {
+
+                        system("cls");
+                        header_little(true);
+                        center_padding(" Press 'E' to Return at Main Menu", false);
+                        cout << "\n";
+                        play_again();
+
+
+                        cout << setw(55) << "" << ": ";
+                        cin >> play_more;
+
+                        play_more = toupper(play_more);
+
+                        if (cin.fail() || !isalpha(play_more) || cin.peek() != '\n' || play_more != 'Y' && play_more != 'N' && play_more != 'E') {
+
+                            center_padding("Invalid Input, Please Try Again", true);
+                            cin.clear();
+                            cin.ignore(1000, '\n');
+                            Sleep(500);
+                            continue;
+
+                        }
+
+                        if (play_more == 'Y' || play_more == 'YES') {
+
+
+                            system("cls");
+                            break;
+
+                        }
+                        else if (play_more == 'N' || play_more == 'NO') {
+
+                            system("cls");
+                            cover(true);
+                            center_padding(" by: Kelly Laurence Q. Roduta - BSIT-S-1A", false);
+                            save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                            cout << "\n\n\n\n";
+                            return 0;
+
+                        }
+                        else if (play_more == 'E' || play_more == 'EXIT') {
+
+                            break;
+
+                        }
+
+
+
+
+                    }
+
+                }
+
+
+
+
+
+            }
+            else if (category[random_active] == " Greek Gods and Goddesses") {
+
+                system("cls");
+                cover(true);
+                cout << "\n";
+                center_padding(" You Just Pick Greek Gods and Goddesses", false);
+                Sleep(2000);
+
+                string g_mythology[] = { "ZEUS", "APOLLO", "HERACLES", "POSEIDON", "HERMES", "ARES", "HEPHAESTUS", "HADES","CHRONOS", "DIONYSUS", "EROS", "HELIOS", "PAEAN", "THANATOS", "TRITON", "CHAOS", "NOTUS", "PAN",
+                "EREBUS", "OCEANUS", "MOMUS", "PROMETHEUS", "BOREAS", "MORPHEUS", "HESPERUS" "PONTUS", "HYPNOS", "NEREUS", "PLUTUS", "AEOLUS", "ASCLEPIUS", "OUREA", "TARTARUS", "URANUS", "AETHER", "CRONUS", "HYPERION",
+                "IAPETUS", "COEUS", "KRATOS", "ATHENA", "HERA", "ARTEMIS", "APHRODITE", "HESTIA", "IRIS", "DEMETER", "HEBE", "HECATE", "ELECTRYONE", "GAIA", "NIKE", "ENYO", "CYBELE", "PHEME", "TYCHE", "ALTHEA", "ERIS",
+                "ACHLYS", "ANANKE", "HEMERA", "NEMESIS", "NESOI", "NYX", "THALASSA", "ELPIS", "TETHYS", "THEIA", "PHOEBE", "THEMIS", "MNEMOSYNE", "CALLIOPE", "DORIS", "ASTERIA", "EILEITHYIA", "DELIA", "SELENE", "CLIO",
+                "ECHO", "CETO", "ELECTRA", "ACHELOIS", "AURA", "EOS", "METIS", "HARMONIA", "BRIZO", "ATROPOS", "THALIA", "CIRCE"};
+                int s_gmythology = sizeof(g_mythology) / sizeof(g_mythology[0]);
+
+                random_active = rand() % s_gmythology;
+
+                system("cls");
+                cover(true);
+                cout << "\n";
+                center_padding(" Randomizing Greek Gods and Goddesses, Please Wait... ", false);
+                Sleep(1000);
+
+                pick = g_mythology[random_active];
+
+                size = pick.length();
+
+                cout << "\n\n";
+
+                center_padding(" Press Enter to Start", true);
+
+                if (cin.get() == '\n') {
+
+                    system("cls");
+
+                    hide_word(extract, size);
+
+                    gameplay(pick, extract, size, lives, category_store);
+                    save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+
+                    while (true) {
+
+                        system("cls");
+                        header_little(true);
+                        center_padding(" Press 'E' to Return at Main Menu", false);
+                        cout << "\n";
+                        play_again();
+
+
+                        cout << setw(55) << "" << ": ";
+                        cin >> play_more;
+
+                        play_more = toupper(play_more);
+
+                        if (cin.fail() || !isalpha(play_more) || cin.peek() != '\n' || play_more != 'Y' && play_more != 'N' && play_more != 'E') {
+
+                            center_padding("Invalid Input, Please Try Again", true);
+                            cin.clear();
+                            cin.ignore(1000, '\n');
+                            Sleep(500);
+                            continue;
+
+                        }
+
+                        if (play_more == 'Y' || play_more == 'YES') {
+
+
+                            system("cls");
+                            break;
+
+                        }
+                        else if (play_more == 'N' || play_more == 'NO') {
+
+                            system("cls");
+                            cover(true);
+                            center_padding(" by: Kelly Laurence Q. Roduta - BSIT-S-1A", false);
+                            save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                            cout << "\n\n\n\n";
+                            return 0;
+
+                        }
+                        else if (play_more == 'E' || play_more == 'EXIT') {
+
+                            break;
+
+                        }
+
+
+
+
+                    }
+
+                }
+
+
+
+
+            }
+
+            if (play_more == 'E' || play_more == 'EXIT') {
+
+                break;
+
+             }
+
+
+        }
+    }
+    else if (is_ready == 2) {
+
+        while (true) {
+            shop(wins, hint, add_life, skip);
+            //cover(true);
+
+            center_padding(" Select the Designated Letter to Buy (E to Exit)", true);
+            cout << setw(58) << "" << ": ";
+            cin >> buy;
+
+
+
+
+            if (cin.peek() != '\n') {
+                center_padding(" Invalid Input, Try Again", true);
+                Sleep(1000);
+                cin.clear();
+                cin.ignore(1000, '\n');
+                continue;
+
+
+            }
+
+            if (buy == 'a' || buy == 'A') {
+
+                do {
+                    system("cls");
+                    shop(wins, hint, add_life, skip);
+                    center_padding(" How Many?", true);
+                    cout << setw(58) << "" << ": ";
+                    cin >> pieces;
+
+                    if (cin.fail() || cin.peek() != '\n') {
+
+                        center_padding("Invalid Input, Please Try Again", true);
+                        cin.clear();
+                        cin.ignore(1000, '\n');
+                        Sleep(1000);
+                        proceed = false;
+                    
+                    } else {
+                  
+                        proceed = true;
+                    }
+                   
+                } while (proceed == false);
+
+                multiplier = pieces * 3;
+
+                if (wins != 0 && multiplier <= wins) {
+
+                    order("Hint");
+                    hint += pieces;
+                    wins -= multiplier;
+                    Sleep(1000);
+                    system("cls");
+
+                    save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+
+                }
+                else {
+
+                    center_padding("Insufficient Number of Wins", true);
+                    Sleep(1000);
+                    system("cls");
+
+                }
+
+
+
+            } else if (buy == 'b' || buy == 'B') {
+
+                do {
+                    system("cls");
+                    shop(wins, hint, add_life, skip);
+                    center_padding(" How Many?", true);
+                    cout << setw(58) << "" << ": ";
+                    cin >> pieces;
+
+                    if (cin.fail() || cin.peek() != '\n') {
+
+                        center_padding("Invalid Input, Please Try Again", true);
+                        cin.clear();
+                        cin.ignore(1000, '\n');
+                        Sleep(1000);
+                        proceed = false;
+
+                    }  else {
+                
+                        proceed = true;
+                    }
+
+                } while (proceed == false);
+
+                multiplier = pieces * 5;
+
+                if (wins != 0 && multiplier <= wins) {
+
+                    order("Life Recovery");
+                    add_life += pieces;
+                    wins -= multiplier;
+                    Sleep(1000);
+                    system("cls");
+
+                    save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+
+                }
+                else {
+
+                    center_padding("Insufficient Number of Wins", true);
+                    Sleep(1000);
+                    system("cls");
+
+                }
+               
+
+
+            }
+            else if (buy == 'c' || buy == 'C') {
+
+                do {
+                    system("cls");
+                    shop(wins, hint, add_life, skip);
+                    center_padding(" How Many?", true);
+                    cout << setw(58) << "" << ": ";
+                    cin >> pieces;
+
+                    if (cin.fail() || cin.peek() != '\n') {
+
+                        center_padding("Invalid Input, Please Try Again", true);
+                        cin.clear();
+                        cin.ignore(1000, '\n');
+                        Sleep(1000);
+                        proceed = false;
+
+                    }
+                    else {
+
+                        proceed = true;
+                    }
+
+                } while (proceed == false);
+
+                multiplier = pieces * 10;
+
+                if (wins != 0 && multiplier <= wins) {
+
+                    order("Skip Word");
+                    skip += pieces;
+                    wins -= multiplier;
+                    Sleep(1000);
+                    system("cls");
+
+                    save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+
+                }  else {
+
+                    center_padding("Insufficient Number of Wins", true);
+                    Sleep(1000);
+                    system("cls");
+
+                }
+          
+
+            }
+            else if (buy == 'e' || buy == 'E') {
+             
+                save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                system("cls");
+                break;
+
+            }
+            else {
+                center_padding(" Invalid Input, Try Again", true);
+                Sleep(1000);
+                cin.clear();
+                cin.ignore(1000, '\n');
+                continue;
+            }
+
+
+
+        }
+
+    }
+    else if (is_ready == 0) {
+
+        cover(true);
+        center_padding(" by: Kelly Laurence Q. Roduta - BSIT-S-1A", false);
+        cout << "\n\n\n\n";
+        save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+        break;
+
+    }
+    else if (is_ready == 3) {
+
+        while (true) {
+
+           
+            header_little(false);
+            cout << setw(120) << setfill('.') << "" << setfill(' ') << endl;
+            cout << "." << setw(10) << "" << left << setw(10) << "Highest Streak: " << left << setw(28) << streak_high << "Current Streak: " << left << setw(47) << int_streak  << "." << endl;
+            cout << setw(120) << setfill('.') << "" << setfill(' ') << endl;
+            cout << setw(10) << "" << left << setw(45) << " Streak Achievement" << left << setw(45) << "Rewards" << "Available" << endl;
+            cout << setw(120) << setfill('.') << "" << setfill(' ') << endl;
+            cout << setw(10) << "" << left << setw(45) << " 1. Accumulate 3 Streaks" << left << setw(49) << "3x hints" << rewards1 << endl;
+            cout << setw(10) << "" << left << setw(45) << " 2. Accumulate 5 Streaks" << left << setw(49) << "1x Revive" << rewards2 << endl;
+            cout << setw(10) << "" << left << setw(45) << " 3. Accumulate 10 Streaks" << left << setw(49) << "3x hints, 1x Revive" << rewards3 << endl;
+            cout << setw(10) << "" << left << setw(45) << " 4. Accumulate 15 Streaks" << left << setw(49) << "5x hints, 1x Revive" << rewards4 << endl;
+            cout << setw(10) << "" << left << setw(45) << " 5. Accumulate 30 Streaks" << left << setw(49) << "10x hints, 3x Revives, 1x Skip" << rewards5 << endl;
+            cout << setw(10) << "" << left << setw(45) << " 6. Accumulate 35 Streaks" << left << setw(49) << "15x hints, 4x Revives, 1x Skip" << rewards6 << endl;
+            cout << setw(10) << "" << left << setw(45) << " 7. Accumulate 50 Streaks" << left << setw(49) << "30x hints, 7x Revives, 5x Skips" << rewards7 << endl;
+            cout << setw(10) << "" << left << setw(45) << " 8. Accumulate 100 Streaks" << left << setw(49) << "70x hints, 15x Revives, 10x Skips" << rewards8 << endl;
+            cout << setw(120) << setfill('.') << "" << setfill(' ') << endl;
+            center_padding(" Press the designated number to claim | Click '0' to Exit", false);
+            cout << "\n";
+            cout << setw(59) << "" << ": ";
+            cin >> streak_claim;
+
+            
+
+                if (cin.fail() || cin.peek() != '\n' || streak_claim != 0 && streak_claim != 1 && streak_claim != 2 && streak_claim != 3 &&
+                    streak_claim != 4 && streak_claim != 5 && streak_claim != 6 && streak_claim != 7 && streak_claim != 8) {
+                    
+                    cin.clear();
+                    cin.ignore(1000, '\n');
+                    center_padding(" Invalid Input, Try Again", true);
+                    Sleep(1000);
+                    system("cls");
+              
+                    continue;
+
+                }
+
+                if (streak_claim == 1) {
+
+                    if (streak_high >= 3 && rewards1 == 1) {
+
+                        hint += 3;
+                        rewards1 = 0;
+                        center_padding(" Successfully Claim 3x himts", true);
+                        Sleep(1000);
+                        system("cls");
+                        save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                        continue;
+
+
+                    }
+                    else {
+
+                        if (rewards1 == 0) {
+
+                            center_padding(" You Already Claimed this Reward", true);
+                            Sleep(1000);
+                            system("cls");
+                            continue;
+
+
+                        }
+                        else {
+                            center_padding(" 3 Streaks not meet", true);
+                            Sleep(1000);
+                            system("cls");
+                            continue;
+                        }
+
+                    }
+
+
+                }
+                else if (streak_claim == 2) {
+
+                    if (streak_high >= 5 && rewards2 == 1) {
+
+                        add_life += 1;
+                        rewards2 = 0;
+                        center_padding(" Successfully Claim 1x Revive", true);
+                        Sleep(1000);
+                        system("cls");
+                        save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                        continue;
+
+
+                    }
+                    else {
+
+                        if (rewards2 == 0) {
+
+                            center_padding(" You Already Claimed this Reward", true);
+                            Sleep(1000);
+                            system("cls");
+                            continue;
+
+
+                        }
+                        else {
+                            center_padding(" 5 Streaks not meet", true);
+                            Sleep(1000);
+                            system("cls");
+                            continue;
+                        }
+
+                    }
+
+                }
+                else if (streak_claim == 3) {
+
+
+                    if (streak_high >= 10 && rewards3 == 1) {
+
+                        hint += 3;
+                        add_life += 1;
+
+                        rewards3 = 0;
+                        center_padding(" Successfully Claim 3x hints & 1x Revive", true);
+                        Sleep(1000);
+                        system("cls");
+                        save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                        continue;
+
+
+                    }
+                    else {
+
+                        if (rewards3 == 0) {
+
+                            center_padding(" You Already Claimed this Reward", true);
+                            Sleep(1000);
+                            system("cls");
+                            continue;
+
+
+                        }
+                        else {
+                            center_padding(" 10 Streaks not meet", true);
+                            Sleep(1000);
+                            system("cls");
+                            continue;
+                        }
+
+                    }
+
+                }
+                else if (streak_claim == 4) {
+
+                    if (streak_high >= 15 && rewards4 == 1) {
+
+                        hint += 5;
+                        add_life += 1;
+
+                        rewards4 = 0;
+                        center_padding(" Successfully Claim 5x hints & 1x Revive", true);
+                        Sleep(1000);
+                        system("cls");
+                        save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                        continue;
+
+
+                    }
+                    else {
+
+                        if (rewards4 == 0) {
+
+                            center_padding(" You Already Claimed this Reward", true);
+                            Sleep(1000);
+                            system("cls");
+                            continue;
+
+
+                        }
+                        else {
+                            center_padding(" 15 Streaks not meet", true);
+                            Sleep(1000);
+                            system("cls");
+                            continue;
+                        }
+
+                    }
+
+                }
+                else if (streak_claim == 5) {
+
+                    if (streak_high >= 30 && rewards5 == 1) {
+
+                        hint += 10;
+                        add_life += 3;
+                        skip += 1;
+
+                        rewards5 = 0;
+                        center_padding(" Successfully Claim 10x hints, 3x Revives, & 1x Skip", true);
+                        Sleep(1000);
+                        system("cls");
+                        save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                        continue;
+
+
+                    }
+                    else {
+
+                        if (rewards5 == 0) {
+
+                            center_padding(" You Already Claimed this Reward", true);
+                            Sleep(1000);
+                            system("cls");
+                            continue;
+
+
+                        }
+                        else {
+                            center_padding(" 30 Streaks not meet", true);
+                            Sleep(1000);
+                            system("cls");
+                            save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                            continue;
+                        }
+
+                    }
+
+                }
+                else if (streak_claim == 6) {
+
+                    if (streak_high >= 35 && rewards6 == 1) {
+
+                        hint += 15;
+                        add_life += 4;
+                        skip += 1;
+
+                        rewards6 = 0;
+                        center_padding(" Successfully Claim 15x hints, 4x Revives, & 1x Skip", true);
+                        Sleep(1000);
+                        system("cls");
+                        save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                        continue;
+
+
+                    }
+                    else {
+
+                        if (rewards6 == 0) {
+
+                            center_padding(" You Already Claimed this Reward", true);
+                            Sleep(1000);
+                            system("cls");
+                            continue;
+
+
+                        }
+                        else {
+                            center_padding(" 35 Streaks not meet", true);
+                            Sleep(1000);
+                            system("cls");
+                            continue;
+                        }
+
+                    }
+
+                }
+                else if (streak_claim == 7) {
+
+                    if (streak_high >= 50 && rewards7 == 1) {
+
+                        hint += 30;
+                        add_life += 7;
+                        skip += 5;
+
+                        rewards7 = 0;
+                        center_padding(" Successfully Claim 30x hints, 7x Revives, & 5x Skips", true);
+                        Sleep(1000);
+                        system("cls");
+                        save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                        continue;
+
+
+                    }
+                    else {
+
+                        if (rewards7 == 0) {
+
+                            center_padding(" You Already Claimed this Reward", true);
+                            Sleep(1000);
+                            system("cls");
+                            continue;
+
+
+                        }
+                        else {
+                            center_padding(" 50 Streaks not meet", true);
+                            Sleep(1000);
+                            system("cls");
+                            continue;
+                        }
+
+                    }
+
+                }
+                else if (streak_claim == 8) {
+
+                    if (streak_high >= 100 && rewards8 == 1) {
+
+                        hint += 70;
+                        add_life += 15;
+                        skip += 10;
+
+                        rewards8 = 0;
+                        center_padding(" Successfully Claim 70x hints, 15x Revives, & 10x Skips", true);
+                        Sleep(1000);
+                        system("cls");
+                        save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+
+                        continue;
+
+
+                    }
+                    else {
+
+                        if (rewards8 == 0) {
+
+                            center_padding(" You Already Claimed this Reward", true);
+                            Sleep(1000);
+                            system("cls");
+                            continue;
+
+
+                        }
+                        else {
+                            center_padding(" 100 Streaks not meet", true);
+                            Sleep(1000);
+                            system("cls");
+                            continue;
+                        }
+
+                    }
+
+                }
+                else {
+
+                    system("cls");
+                    break;
+                }
+
+                save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+
+        }
+
+
+          
+        
+
+
+       
+
+    }
+    else if (is_ready == 4) {
+
+        while (true) {
+            cout << "*" << setw(118) << setfill('-') << "" << "*" << setfill(' ') << endl;
+            center_padding(" (i) About the Game", false);
+            cout << "\n*" << setw(118) << setfill('-') << "" << "*" << setfill(' ') << endl;
+            cout << setw(10) << "" << "(i) Game Mechanics" << endl;
+            cout << "*" << setw(118) << setfill('-') << "" << "*" << setfill(' ') << endl;
+            cout << setw(15) << "" << "a. In this game, the player has 6 lives, n to each missing part of the man: \n" << setw(20) << "" << "1.  0 -> the head \t\t\t\t 0 \n"
+                << setw(20) << "" << "2.  | -> the body \t\t\t\t/|\\ \n" << setw(20) << "" << "3. / \\ -> two arms \t\t\t\t/ \\ \n" << setw(20) << "" << "4. / \\ -> two feet \t\t\t     'The Man'" << endl;
+            cout << "*" << setw(118) << setfill('-') << "" << "*" << setfill(' ') << endl;
+            cout << "" << setw(15) << "" << "b. Categories are randomized, in which for each category, there is a random word that a player must \n " << setw(10) << "" << " guess correctly, filling in the blank('_'). " << endl;
+            cout << "*" << setw(118) << setfill('-') << "" << "*" << setfill(' ') << endl;
+            cout << setw(15) << "" << "c. As the player inputs a correct letter, all blanks that correspond to that letter will be changed \n " << setw(10) << ""
+                << " to the letter itself, making them guess it easily. For instance, supposed that the word consists of 5  \n " << setw(10) << ""
+                << " letters, (_ _ _ _ _),as you type 'P', and it is correct, it will replace all blanks, (_ P P _ _), serving \n " << setw(10) << ""
+                << " as a hint." << endl;
+            cout << "*" << setw(118) << setfill('-') << "" << "*" << setfill(' ') << endl;
+            cout << setw(15) << "" << "d. For every mistake, lives are reduced by one, for which each body part will appear. For instance, \n " << setw(10) << ""
+                << " - I have one mistake \n " << setw(15) << ""
+                << " 0 (head) will appear \n " << setw(10) << ""
+                << " - As I performed another mistake \n " << setw(15) << ""
+                << " | (body) will appear \n " << setw(10) << ""
+                << " - At the end, after making six mistakes, the body of a man being hanged will appear, concluding the game. " << endl;
+            cout << "*" << setw(118) << setfill('-') << "" << "*" << setfill(' ') << endl;
+            cout << setw(15) << "" << "e. Enjoy the Game! " << endl;
+            cout << "*" << setw(118) << setfill('-') << "" << "*" << setfill(' ') << endl;
+            center_padding(" Press 'B' to go Back, 'N' to Next ", false);
+            cout << "\n" << setw(59) << "" << ": ";
+            cin >> info_button;
+
+            info_button = toupper(info_button);
+
+            if (cin.fail() || cin.peek() != '\n' || info_button != 'B' && info_button != 'N') {
+
+                center_padding(" Invalid Input, Try Again", true);
+                Sleep(1000);
+                system("cls");
+                cin.clear();
+                cin.ignore(1000, '\n');
+                continue;
+
+
+            }
+
+            if (info_button == 'B') {
+
+                system("cls");
+                break;
+
+
+            } else if (info_button == 'N') {
+
+                while (true) {
+                    system("cls");
+                    cout << "*" << setw(118) << setfill('-') << "" << "*" << setfill(' ') << endl;
+                    center_padding(" (i) About the Game", false);
+                    cout << "\n*" << setw(118) << setfill('-') << "" << "*" << setfill(' ') << endl;
+                    cout << setw(10) << "" << "(i) About the Shop" << endl;
+                    cout << "*" << setw(118) << setfill('-') << "" << "*" << setfill(' ') << endl;
+                    cout << setw(15) << "" << "a. Players can buy items in the shop through their wins, making it more challenging." << endl;
+                    cout << "*" << setw(118) << setfill('-') << "" << "*" << setfill(' ') << endl;
+                    cout << setw(15) << "" << "b. Each item has corresponding wins for them to be able to buy, as follows : \n " << setw(20) << ""
+                        << " Hint: 3 wins \n " << setw(20) << ""
+                        << " Revive : 5 Wins \n " << setw(20) << ""
+                        << " Word Skip : 10 Wins " << endl;
+                    cout << "*" << setw(118) << setfill('-') << "" << "*" << setfill(' ') << endl;
+                    cout << setw(10) << "" << "(i) About the Items" << endl;
+                    cout << "*" << setw(118) << setfill('-') << "" << "*" << setfill(' ') << endl;
+                    cout << setw(15) << "" << "a. Hint: is used to reveal one letter only. If the word consists of the same letters, one of those \n " << setw(10) << ""
+                        << " will be just shown, not entirely. For instance, in the word 'apple', as expressed in the blank as \n " << setw(10) << ""
+                        << " (A _ _ L _ ), if you use of a hint, the second letter will appear, which is 'P', but the third \n " << setw(10) << ""
+                        << " letter, which is also the same, won't appear. This is to maintain fairness." << endl;
+                    cout << "*" << setw(118) << setfill('-') << "" << "*" << setfill(' ') << endl;
+                    cout << setw(15) << "" << "b.Revive: As the player reaches zero lives, he can use his revive, resetting his lives to 6, which \n " << setw(10) << ""
+                        << " allows him to guess a letter again without any addition to his losses. " << endl;
+                    cout << "*" << setw(118) << setfill('-') << "" << "*" << setfill(' ') << endl;
+                    cout << setw(15) << "" << "c. Skip Word: It acts like an escape rope that allows the player to reveal the word and generate \n " << setw(10) << ""
+                        << " new words to guess without adding to neither his win nor his loss. " << endl;
+                    cout << "*" << setw(118) << setfill('-') << "" << "*" << setfill(' ') << endl;
+                    center_padding(" NOTE: These items are also buyable during the game, not only in the shop!", false);
+                    cout << "\n*" << setw(118) << setfill('-') << "" << "*" << setfill(' ') << endl;
+
+                    center_padding(" Press 'B' to go Back, or 'E' to the Main Menu.", false);
+                    cout << "\n" << setw(59) << "" << ": ";
+                    cin >> info_button;
+                    info_button = toupper(info_button);
+
+                    if (cin.fail() || cin.peek() != '\n' || info_button != 'B' && info_button != 'E') {
+
+                        center_padding(" Invalid Input, Try Again", true);
+                        Sleep(1000);
+                        system("cls");
+                        cin.clear();
+                        cin.ignore(1000, '\n');
+                        continue;
+
+
+                    }
+
+                    if (info_button == 'B') {
+
+                        system("cls");
+                        break;
+
+
+                    }
+                    else if (info_button == 'E') {
+
+                        system("cls");
+                        break;
+
+                    }
+
+                }
+
+            }
+
+            if (info_button == 'E') {
+                
+                break;
+            }
+
+        }
+
+
+
+    }
+    
+}
+
+
+
+
+}
+
+void cover(bool is_cover) {
+
+    if (is_cover == true) {
+        cout << "\n\n\n\n";
+
+        system("Color 3");
+        cout << setw(20) << "" << "  _____                                                                       _____ " << endl;
+        cout << setw(20) << "" << " ( ___ )---------------------------------------------------------------------( ___ ) " << endl;
+        cout << setw(20) << "" << "  |   |                                                                       |   |" << endl;
+        cout << setw(20) << "" << "  |   |            _______   _         _______   _______   _______   _        |   |" << endl;
+        cout << setw(20) << "" << "  |   | |\\     /| (  ___  ) ( (    /| (  ____ \\ (       ) (  ___  ) ( (    /| |   | " << endl;
+        cout << setw(20) << "" << "  |   | | )   ( | | (   ) | |  \\  ( | | (    \\/ | () () | | (   ) | |  \\  ( | |   |" << endl;
+        cout << setw(20) << "" << "  |   | | (___) | | (___) | |   \\ | | | |       | || || | | (___) | |   \\ | | |   | " << endl;
+        cout << setw(20) << "" << "  |   | |  ___  | |  ___  | | (\\ \\) | | | ____  | |(_)| | |  ___  | | (\\ \\) | |   | " << endl;
+        cout << setw(20) << "" << "  |   | | (   ) | | (   ) | | | \\   | | | \\_  ) | |   | | | (   ) | | | \\   | |   |" << endl;
+        cout << setw(20) << "" << "  |   | | )   ( | | )   ( | | )  \\  | | (___) | | )   ( | | )   ( | | )  \\  | |   |" << endl;
+        cout << setw(20) << "" << "  |   | |/     \\| |/     \\| |/    )_) (_______) |/     \\| |/     \\| |/    )_) |   |" << endl;
+        cout << setw(20) << "" << "  |___|                                                                       |___|" << endl;
+        cout << setw(20) << "" << " (_____)---------------------------------------------------------------------(_____)" << endl;
+
+    }
+    else {
+
+        cout << setw(20) << "" << "  _____                                                                       _____ " << endl;
+        cout << setw(20) << "" << " ( ___ )---------------------------------------------------------------------( ___ ) " << endl;
+        cout << setw(20) << "" << "  |   |                                                                       |   |" << endl;
+        cout << setw(20) << "" << "  |   |            _______   _         _______   _______   _______   _        |   |" << endl;
+        cout << setw(20) << "" << "  |   | |\\     /| (  ___  ) ( (    /| (  ____ \\ (       ) (  ___  ) ( (    /| |   | " << endl;
+        cout << setw(20) << "" << "  |   | | )   ( | | (   ) | |  \\  ( | | (    \\/ | () () | | (   ) | |  \\  ( | |   |" << endl;
+        cout << setw(20) << "" << "  |   | | (___) | | (___) | |   \\ | | | |       | || || | | (___) | |   \\ | | |   | " << endl;
+        cout << setw(20) << "" << "  |   | |  ___  | |  ___  | | (\\ \\) | | | ____  | |(_)| | |  ___  | | (\\ \\) | |   | " << endl;
+        cout << setw(20) << "" << "  |   | | (   ) | | (   ) | | | \\   | | | \\_  ) | |   | | | (   ) | | | \\   | |   |" << endl;
+        cout << setw(20) << "" << "  |   | | )   ( | | )   ( | | )  \\  | | (___) | | )   ( | | )   ( | | )  \\  | |   |" << endl;
+        cout << setw(20) << "" << "  |   | |/     \\| |/     \\| |/    )_) (_______) |/     \\| |/     \\| |/    )_) |   |" << endl;
+        cout << setw(20) << "" << "  |___|                                                                       |___|" << endl;
+        cout << setw(20) << "" << " (_____)---------------------------------------------------------------------(_____)" << endl;
+    }
+}
+
+void center(string to_center, bool w_design) {
+    int setWidth = 120;
+
+    int text_length = to_center.length();
+    int padding = (120 - text_length) / 2;
+
+    if (w_design == false) {
+        cout << string(padding, ' ') + to_center;
+    }
+    else if (w_design == true) {
+        cout << string(padding - 1, ' ') << setw(text_length + 2) << setfill('-') << "" << setfill(' ') << endl;
+        cout << string(padding, ' ') << to_center << endl;
+        cout << string(padding - 1, ' ') << setw(text_length + 2) << setfill('-') << "" << setfill(' ') << endl;
+    }
+}
+
+bool register1(string user, string pass) {
+
+    string checker;
+    ifstream i_players("registered.txt");
+
+    if (i_players.is_open()) {
+        while (getline(i_players, checker)) {
+            if (checker.find("Username: " + user) == 0) {
+                i_players.close();
+                return false;
+            }
+        }
+        i_players.close();
+    }
+
+    ofstream o_players("registered.txt", ios::app);
+    if (o_players.is_open()) {
+        o_players << "Username: " << user << "\n" << "Password: " << pass << "\n\n\n" << endl;
+        cout << "\n";
+        center("Player Successfully Registered", true);
+        o_players.close();
+        return true;
+    }
+    else {
+        center("Error Opening File For Registering", true);
+    }
+    return false;
+}
+
+bool login(string user, string pass) {
+    string reader, user_access, pass_access;
+    ifstream players("registered.txt");
+
+    if (players.is_open()) {
+        while (getline(players, reader)) {
+            if (reader.find("Username: ") == 0) {
+                user_access = reader.substr(10);
+
+                
+            }
+            else if (reader.find("Password: ") == 0) {
+                pass_access = reader.substr(10);
+
+                if (user == user_access && pass == pass_access) {
+                    cout << "\n";
+                    players.close();
+                    return true;
+                }
+            }
+        }
+
+        cout << "\n";
+        center("User Not Found!", true);
+        cout << "\n";
+        center("Press Enter to Clear", false);
+        players.close();
+        return false;
+
+    }
+    else {
+        center("Error Opening Account File", true);
+    }
+    return false;
+}
+
+/*
+void save_progress(string user) {
+
+    string o_user_reader;
+
+    ofstream i_progress;
+
+    i_progress.open("save_game_data.txt", ios::app);
+
+    if (i_progress.is_open()) {
+
+
+
+
+    }
+
+
+
+
+
+
+    
+
+    // to be continued for some formats requirement, finish the game first or the outline of the game.
+
+
+}
+*/
+
+int termination() {
+
+    if (cin.get() == '\n') {
+        system("cls");
+    }
+    else {
+        cout << "\n";
+        center("Instructions Denied, Terminating Program", true);
+        exit(0);
+    }
+}
+
+void center_padding(string name, bool border) {
+
+    int total_width(120);
+    int text_length = name.length();
+    int padding = (total_width - text_length) / 2;
+
+    if (border == true) {
+        cout << setw(padding) << "" << setw(text_length + 1) << setfill('-') << "" << setfill(' ') << endl;
+        cout << setw(padding) << "" << name << endl;
+        cout << setw(padding) << "" << setw(text_length + 1) << setfill('-') << "" << setfill(' ') << endl;
+
+    } else {
+
+        cout << setw(padding) << "" << name; 
+       
+
+    }
+}
+
+
+void order(string buy) {
+
+    string bought(" You Just Bought " + buy);
+    int total_width(120);
+    int text_length = bought.length();
+    int padding = (total_width - text_length) / 2;
+
+    
+        cout << setw(padding) << "" << setw(text_length + 1) << setfill('-') << "" << setfill(' ') << endl;
+        cout << setw(padding) << "" << bought << endl;
+        cout << setw(padding) << "" << setw(text_length + 1) << setfill('-') << "" << setfill(' ') << endl;
+
+   
+}
+
+void hide_word(char extract[], int word_size) {
+
+
+    for (int i = 0; i < word_size; i++) {
+
+        extract[i] = '_';
+
+    }
+
+    extract[word_size] = '\0';
+}
+
+void guess_right(string& word, char extract[], int word_size, char guess) {
+
+
+
+    for (int i = 0; i < word_size; i++) {
+
+
+
+        if (word[i] == guess) {
+
+            extract[i] = word[i];
+
+
+        }
+    }
+
+}
+
+
+void lives_counter(int& lives, string category) {
+
+
+    if (lives == 6) {
+
+        header_littlev2();
+        center_padding(category, false);
+        cout << "\n";
+        cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+        cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+
+        cout << setw(30) << "" << "| |" << setw(54) << "" << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " ------     .-------------------." << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |    |    /    Think wisely     \\" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |        |  Why not type vowels  |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |         \\      first?         /" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |          '-------------------'" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |                    |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << "  ------     -------------------" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |      |   | Lives: 6 - DO IT! |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << "  ------     -------------------" << "  | |" << endl;
+        cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+        cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+        cout << setw(25) << "" << "     | |                                                      | | " << endl;
+    }
+    else if (lives == 5) {
+
+
+        header_littlev2();
+        center_padding(category, false);
+        cout << "\n";
+        cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+        cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+
+        cout << setw(30) << "" << "| |" << setw(54) << "" << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " ------     .-------------------." << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |    |    /   Please do better  \\" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |    0   <  I'm sure you can do  |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |         \\     it, right?      /" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |          '-------------------'" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |                    |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << "  ------     -------------------" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |      |   | Lives: 5 - HMMMM! |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << "  ------     -------------------" << "  | |" << endl;
+        cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+        cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+        cout << setw(25) << "" << "     | |                                                      | | " << endl;
+
+    }
+    else if (lives == 4) {
+
+
+
+        header_littlev2();
+        center_padding(category, false);
+        cout << "\n";
+
+        cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+        cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+        cout << setw(30) << "" << "| |" << setw(54) << "" << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " ------     .-------------------." << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |    |    /   I am getting sad  \\" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |    0   <  Fine, i'll wait for  |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |    |    \\ your correct answer /" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |          '-------------------'" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |                    |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << "  ------     -------------------" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |      |   | Lives: 4 - ARGHH! |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << "  ------     -------------------" << "  | |" << endl;
+        cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+        cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+        cout << setw(25) << "" << "     | |                                                      | | " << endl;
+
+    }
+    else if (lives == 3) {
+
+        header_littlev2();
+        center_padding(category, false);
+        cout << "\n";
+
+        cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+        cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+        cout << setw(30) << "" << "| |" << setw(54) << "" << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " ------     .-------------------." << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |    |    /   3 More mistakes,  \\" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |    0   <     I'll be gone...   |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |   /|    \\   Show empathy!     /" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |          '-------------------'" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |                    |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << "  ------     -------------------" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |      |   | Lives: 3 - BYE?   |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << "  ------     -------------------" << "  | |" << endl;
+        cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+        cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+        cout << setw(25) << "" << "     | |                                                      | | " << endl;
+    }
+    else if (lives == 2) {
+
+
+        header_littlev2();
+
+        center_padding(category, false);
+        cout << "\n";
+
+        cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+        cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+        cout << setw(30) << "" << "| |" << setw(54) << "" << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " ------     .-------------------." << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |    |    /   Can you help me   \\" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |    0   <  tell my parents that |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |   /|\\   \\    i love them?     /" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |          '-------------------'" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |                    |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << "  ------     -------------------" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |      |   | Lives: 2 - END?   |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << "  ------     -------------------" << "  | |" << endl;
+        cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+        cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+        cout << setw(25) << "" << "     | |                                                      | | " << endl;
+    }
+    else if (lives == 1) {
+
+
+        header_littlev2();
+
+        center_padding(category, false);
+        cout << "\n";
+
+        cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+        cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+        cout << setw(30) << "" << "| |" << setw(54) << "" << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " ------     .-------------------." << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |    |    /   1 life left....   \\" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |    0   <  Should I accept the  |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |   /|\\   \\    the fact?        /" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |   /      '-------------------'" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |                    |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << "  ------    ---------------------" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |      |  | Lives: 1 - SAYONARA |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << "  ------    ---------------------" << "  | |" << endl;
+        cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+        cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+        cout << setw(25) << "" << "     | |                                                      | | " << endl;
+
+    }
+    else if (lives == 0) {
+
+
+        header_littlev2();
+
+        center_padding(category, false);
+        cout << "\n";
+
+
+        cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+        cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+        cout << setw(30) << "" << "| |" << setw(54) << "" << "| |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " ------     .-------------------." << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |    |    /                     \\" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |    0   <   xx xx xx xx xx xx   |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |   /|\\   \\                     /" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |   / \\    '-------------------'" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |                    |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << "  ------    ---------------------" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << " |      |  |  Why not next time? |" << "  | |" << endl;
+        cout << setw(30) << "" << "| |" << setw(13) << "" << left << setw(39) << "  ------    ---------------------" << "  | |" << endl;
+        cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+        cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+        cout << setw(25) << "" << "     | |                                                      | | " << endl;
+
+
+     
+    }
+
+  
+
+}
+
+void gameplay(string& word, char extract[], int word_size, int& lives, string category) {
+
+    static string storage;
+
+    char letter, decision, buy;
+
+    bool skip_b = false, b_success = false, s_success = false, r_success = false;
+
+    int loc2, quantity, calculator = 0;
+
+
+    while (true) {
+
+        if (lives == 6) {
+            lives_counter(lives, category);
+        }
+        else if (lives == 5) {
+            lives_counter(lives, category);
+        }
+        else if (lives == 4) {
+            lives_counter(lives, category);
+        }
+        else if (lives == 3) {
+            lives_counter(lives, category);
+        }
+        else if (lives == 2) {
+            lives_counter(lives, category);
+        }
+        else if (lives == 1) {
+            lives_counter(lives, category);
+        }
+        else if (lives == 0) {
+
+            while (true) {
+
+                if (add_life > 0) {
+                    lives_counter(lives, category);
+             
+                    center_padding(" Do You Want Use Revive?(Y/N)", true);
+                    cout << setw(59) << "" << ": ";
+                    cin >> decision;
+
+                    decision = toupper(decision);
+
+                    if (cin.fail() || cin.peek() != '\n' || decision != 'Y' && decision != 'N') {
+
+                        center_padding(" Invalid Input, 'Y' or 'N' Only", true);
+                        Sleep(1000);
+                        system("cls");
+                        cin.clear();
+                        cin.ignore(1000, '\n');
+                        continue;
+                    }
+                    else if (decision == 'Y') {
+
+                        system("cls");
+                        lives = 6;
+                        add_life--;
+                        lives_counter(lives, category);
+                        cin.clear();
+                        cin.ignore(1000, '\n');
+                        break;
+
+                    }
+                    else {
+
+                       
+                        break;
+
+                    }
+
+                } else {
+                     
+                    while (true) {
+
+                        system("cls");
+                        lives_counter(lives, category);
+                        center_padding(extract, false);
+                        cout << "\n";
+                        center_padding(" Insufficient Number of Revive", true);
+                    
+                        cout << "\n";
+
+
+                        center_padding(" Do You Want to Buy?(Y/N)", true);
+
+                        cout << setw(59) << "" << ": ";
+                        cin >> buy;
+                        buy = toupper(buy);
+
+                        if (cin.fail() || cin.peek() != '\n' || buy != 'Y' && buy != 'N') {
+
+                            center_padding("Invalid Input, Please Enter A Valid Choice", true);
+                            cin.clear();
+                            cin.ignore(1000, '\n');
+
+                            Sleep(1000);
+                            system("cls");
+                            continue;
+
+
+                        }
+
+                        if (buy == 'Y') {
+
+                            center_padding(" How Many?", true);
+                            cout << setw(59) << "" << ": ";
+                            cin >> quantity;
+
+
+
+                            if (cin.fail() || cin.peek() != '\n' || quantity <= 0) {
+
+                                center_padding("Invalid Input, Please Enter A Valid Choice", true);
+                                cin.clear();
+                                cin.ignore(1000, '\n');
+
+                                Sleep(1000);
+                                system("cls");
+                                continue;
+
+                            }
+
+                            calculator = quantity * 5;
+
+                            if (wins < calculator) {
+
+
+                                center_padding(" Insufficient Number of Wins", true);
+                                Sleep(1000);
+                                system("cls");
+                                cin.clear();
+                                cin.ignore(1000, '\n');
+                                continue;
+
+                            }
+                            else {
+
+                                center_padding(" You Successfully Purchased and Used Revive", true);
+                                wins -= calculator;
+                                add_life += quantity;
+                                r_success = true;
+                                lives = 6;
+                                add_life--;
+                                Sleep(1000);
+                                system("cls");
+                                save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                                lives_counter(lives, category);
+                                cin.clear();
+                                cin.ignore(1000, '\n');
+                           
+
+                                break;
+
+                            }
+
+
+
+
+                        }
+                        else if (buy == 'N') {
+
+                            break;
+
+                        }
+
+
+
+
+                    }
+
+                    
+                }
+                
+                if (buy == 'N' || r_success == true) {
+                    break;
+                }
+              
+
+            }
+        }
+
+        if (lives == 0) {
+
+            system("cls");
+            lives_counter(lives, category);
+            center_padding(" Word: " + word, false);
+            cout << "\n";
+            center_padding("Game Over | Now Exiting....", false);
+            streak = false;
+            int_streak = 0;
+            storage.clear();
+            lose++;
+            Sleep(1000);
+            system("cls");
+            save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+
+            break;
+
+           
+        }
+
+        if (extract != word) {
+            center_padding(extract, false);
+        }
+        else if (extract == word) {
+
+            cin.ignore(1000, '\n');
+            center_padding("  You Guessed: ", false);
+            cout << "\n";
+            center_padding(extract, false);
+            cout << "\n\n ";
+            center_padding("Congratulations, You Win!", false);
+            streak = true;
+            int_streak++;
+
+            if (int_streak > streak_high) {
+
+                streak_high = int_streak;
+
+            }
+
+            wins++;
+            storage.clear();
+            cout << "\n";
+            center_padding("Exiting...", false);
+            Sleep(1000);
+            save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+
+            break;
+
+        }
+
+        cout << "\n";
+        cout << setw(59) << "" << ": ";
+        cin >> letter;
+      
+        if (cin.fail() || cin.peek() != '\n' ||( !isalpha(letter) && letter != '1' && letter != '2')) {
+
+            center_padding("Invalid Input, Please Enter A Valid Choice", true);
+            cin.clear();
+            cin.ignore(1000, '\n');
+            Sleep(1000);
+            system("cls");
+            continue;
+
+        } else if (letter == '1'){
+
+            while (true) {
+
+                if (hint > 0) {
+
+                    system("cls");
+                    lives_counter(lives, category);
+
+                    if (extract != word) {
+                        center_padding(extract, false);
+                    }
+                    else if (extract == word) {
+
+                        cin.ignore(1000, '\n');
+                        center_padding("You Guessed: ", false);
+                        cout << "\n";
+                        center_padding(extract, false);
+                        cout << "\n\n ";
+                        center_padding("Congratulations, You Win!", false);
+                        streak = true;
+                        int_streak++;
+                        if (int_streak > streak_high) {
+
+                            streak_high = int_streak;
+
+                        }
+                         
+                        wins++;
+                        storage.clear();
+                        cout << "\n";
+                        center_padding("Exiting...", false);
+
+                        Sleep(1000);
+                    }
+
+                    cout << "\n";
+                    center_padding(" Type 'Y' to Confirm | 'N' to Cancel ", true);
+                    cout << setw(59) << "" << ": ";
+                    cin >> decision;
+
+                    decision = toupper(decision);
+
+                    if (cin.fail() || cin.peek() != '\n' || decision != 'Y' && decision != 'N') {
+
+                        center_padding(" Invalid Input, 'Y' or 'N' Only", true);
+                        Sleep(1000);
+                        system("cls");
+                        cin.clear();
+                        cin.ignore(1000, '\n');
+                        continue;
+
+                    } else if (decision == 'Y') {
+                        hint_usage(word, extract, word_size, hint);
+                        break;
+
+                    } else {
+
+                        break;
+
+                    }
+
+                }
+                else {
+                    
+                    while (true) {
+
+                        system("cls");
+                        lives_counter(lives, category);
+
+                        if (extract != word) {
+                            center_padding(extract, false);
+                        }
+                        else if (extract == word) {
+
+                            cin.ignore(1000, '\n');
+                            center_padding("You Guessed: ", false);
+                            cout << "\n";
+                            center_padding(extract, false);
+                            cout << "\n\n ";
+                            center_padding("Congratulations, You Win!", false);
+                            streak = true;
+                            int_streak++;
+                            if (int_streak > streak_high) {
+
+                                streak_high = int_streak;
+
+                            }
+
+                            wins++;
+                            storage.clear();
+                            cout << "\n";
+                            center_padding("Exiting...", false);
+
+                            Sleep(1000);
+                        }
+
+                        cout << "\n";
+                        center_padding(" Insufficient Number of Hint", true);
+                        cout << "\n";
+                        center_padding(" Do You Want to Buy?(Y/N)", true);
+
+                        cout << setw(59) << "" << ": ";
+                        cin >> buy;
+                        buy = toupper(buy);
+
+                        if (cin.fail() || cin.peek() != '\n' || buy != 'Y' && buy != 'N') {
+
+                            center_padding("Invalid Input, Please Enter A Valid Choice", true);
+                            cin.clear();
+                            cin.ignore(1000, '\n');
+
+                            Sleep(1000);
+                            system("cls");
+                            continue;
+                        
+
+                        } 
+
+                        if (buy == 'Y') {
+
+                            center_padding(" How Many?", true);
+                            cout << setw(59) << "" << ": ";
+                            cin >> quantity;
+                            
+
+
+                            if (cin.fail() || cin.peek() != '\n' || quantity <= 0 ) {
+
+                                center_padding("Invalid Input, Please Enter A Valid Choice", true);
+                                cin.clear();
+                                cin.ignore(1000, '\n');
+
+                                Sleep(1000);
+                                system("cls");
+                                continue;
+
+                            }
+                         
+                            calculator = quantity * 3;
+
+                            if (wins < calculator) {
+
+                             
+                                center_padding(" Insufficient Number of Wins", true);
+                                Sleep(1000);
+                                system("cls");
+                                cin.clear();
+                                cin.ignore(1000, '\n');
+                                continue;
+
+                            }
+                            else {
+
+                                center_padding(" You Successfully Purchased and Used Hints", true);
+                                wins -= calculator;
+                                hint += quantity;
+                                b_success = true;
+                                Sleep(1000);
+                                system("cls");
+                                save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+                                hint_usage(word, extract, word_size, hint);
+
+                                break;
+
+                            }
+
+
+
+
+                        } else if (buy == 'N') {
+
+                            break;
+
+                        }
+
+
+
+
+                    }
+
+                }
+
+                if (b_success == true || buy == 'N') {
+                    break;
+                }
+
+
+
+            }
+            
+
+        } else if (letter == '2') {
+
+            while (true) {
+
+                if (skip > 0) {
+
+                    system("cls");
+                    lives_counter(lives, category);
+                    center_padding(extract, false);
+
+                    cout << "\n";
+                    center_padding(" Type 'Y' to Confirm | 'N' to Cancel ", true);
+                    cout << setw(59) << "" << ": ";
+                    cin >> decision;
+
+                    decision = toupper(decision);
+
+                    if (cin.fail() || cin.peek() != '\n' || decision != 'Y' && decision != 'N') {
+
+                        center_padding(" Invalid Input, 'Y' or 'N' Only", true);
+                        Sleep(1000);
+                        system("cls");
+                        cin.clear();
+                        cin.ignore(1000, '\n');
+                        continue;
+
+                    } else if (decision == 'Y') {
+                            
+                            system("cls");
+                            cin.ignore(1000, '\n');
+                            lives_counter(lives, category);
+                            center_padding("Word Skipped: ", false);
+                            skip--;
+                            cout << "\n";
+                            center_padding(word, false);
+                            storage.clear();
+                            cout << "\n";
+                            center_padding("Exiting...", false);
+                            skip_b = true;
+                            Sleep(1000);
+                            break;
+                   
+
+                    } else {
+
+                        break;
+
+                    }
+
+                }
+                else {
+
+                    while (true) {
+
+                        system("cls");
+                        lives_counter(lives, category);
+                        center_padding(extract, false);
+
+
+                        cout << "\n";
+                        center_padding(" Insufficient Number of Word Skip", true);
+                  
+                        cout << "\n";
+
+
+                        center_padding(" Do You Want to Buy?(Y/N)", true);
+
+                        cout << setw(59) << "" << ": ";
+                        cin >> buy;
+                        buy = toupper(buy);
+
+                        if (cin.fail() || cin.peek() != '\n' || buy != 'Y' && buy != 'N') {
+
+                            center_padding("Invalid Input, Please Enter A Valid Choice", true);
+                            cin.clear();
+                            cin.ignore(1000, '\n');
+
+                            Sleep(1000);
+                            system("cls");
+                            continue;
+
+
+                        }
+
+                        if (buy == 'Y') {
+
+                            center_padding(" How Many?", true);
+                            cout << setw(59) << "" << ": ";
+                            cin >> quantity;
+
+
+
+                            if (cin.fail() || cin.peek() != '\n' || quantity <= 0) {
+
+                                center_padding("Invalid Input, Please Enter A Valid Choice", true);
+                                cin.clear();
+                                cin.ignore(1000, '\n');
+
+                                Sleep(1000);
+                                system("cls");
+                                continue;
+
+                            }
+
+                            calculator = quantity * 10;
+
+                            if (wins < calculator) {
+
+
+                                center_padding(" Insufficient Number of Wins", true);
+                                Sleep(1000);
+                                system("cls");
+                                cin.clear();
+                                cin.ignore(1000, '\n');
+                                continue;
+
+                            }
+                            else {
+
+                                center_padding(" You Successfully Purchased and Used Word Skip", true);
+                                wins -= calculator;
+                                skip += quantity;
+                                s_success = true;
+                                Sleep(1000);
+                                system("cls");
+                                save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+
+                                system("cls");
+                                cin.ignore(1000, '\n');
+                                lives_counter(lives, category);
+                                center_padding("Word Skipped: ", false);
+                                skip--;
+                                cout << "\n";
+                                center_padding(word, false);
+                                storage.clear();
+                                cout << "\n";
+                                center_padding("Exiting...", false);
+                                skip_b = true;
+                                Sleep(1000);
+                                break;
+
+
+                            }
+
+
+
+
+                        }
+                        else if (buy == 'N') {
+
+                            break;
+
+                        }
+
+                    }
+
+                }
+                if (buy == 'N' || s_success == true) {
+                    break;
+                }
+            }
+
+        }
+        else {
+
+            letter = toupper(letter);
+
+            int loc = word.find(letter);
+
+
+            if (loc != string::npos) {
+
+                guess_right(word, extract, word_size, letter);
+
+                loc2 = storage.find(letter);
+
+                if (loc2 != string::npos) {
+
+                    center_padding(" You Already Guess that Letter", true);
+                    cin.clear();
+                    cin.ignore(1000, '\n');
+                    Sleep(500);
+
+
+                }
+
+                storage += letter;
+
+                system("cls");
+
+            }
+            else {
+                 //the number proceed here, dapat hindi. (fixed)
+                cin.clear();
+                cin.ignore(1000, '\n');
+                cout << "\n";
+                center_padding(" Wrong!", true);
+                lives--;
+                storage += letter;
+                Sleep(500);
+                system("cls");
+            }
+        }
+
+        save_data(username, wins, lose, hint, add_life, skip, is_intro, streak_high, int_streak, rewards1, rewards2, rewards3, rewards4, rewards5, rewards6, rewards7, rewards8);
+        if (skip_b == true) {
+
+            system("cls");
+            break;
+
+        }
+
+    }
+
+    
+
+}
+
+void header_little(bool curtain) {
+
+    cout << "(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)" << endl;
+    cout << "   |" << "      |       |       |    | " << "  +-----------------------------------------------+ " << "   |      |     |   |       |    " << endl;
+    cout << "   |" << "      |       |       |    |" << "   | _     _                   _______              ) " << "  |      |     |   |       |    " << endl;
+    cout << "   |" << "      |       |       |   * *" << "  |(_)   (_)                 (_______)             ) " << "  |      |    * *  |       |    " << endl;
+    cout << "   |" << "     * *      |       |  *   * " << "| _______ _____ ____   ____ _  _  _ _____ ____   )" << "  * *     |   *   * |     *   *    " << endl;
+    cout << " *   *  " << "*   *   *   *     |   ***" << "  ||  ___  (____ |    \\ / _  | ||_|| (____ |  _ \\  ) " << "*   *  *   *  * *  |    *     *" << endl;
+    cout << "*     *  " << "***   *     *   * * " << "      || |   | / ___ | | | ( (_| | |   | / ___ | | | | ) " << " ***  *     *     * *  *       *" << endl;
+    cout << "*     *  " << "     *       * *   *" << "      ||_|   |_\\_____|_| |_|\\___ |_|   |_\\_____|_| |_| ) " << "     *       *   *   *  *     *  " << endl;
+    cout << " * * *  " << "       *     *   ***  " << "     |                    (_____|                     ) " << "      *     *     ***     * *   " << endl;
+    cout << "      " << "          * * *       " << "       +-----------------------------------------------+ " << "        * * *                " << endl;
+   
+    if (curtain == true) {
+        cout << "*                                *                                                  *                                *       " << endl;
+        cout << "     *                      *                 Guess the Word, Save the Man!              *                      *                   " << endl;
+        cout << "          *     **     *                                                                      *     **     *                             " << endl;
+    } 
+       
+   
+    
+}
+
+
+void loading_animation() {
+
+    int tips_random;
+
+    string pick_tip;
+
+    string tips[] = { " Why not try vowel first? ", " In main menu, press 3 to access winstreak rewards! ", " Think, Enter, Skip Word ", " Don't let your mind hang ", " Simple game but do have fun! ", " Be careful for what you're clicking ",
+    " There is no time limit, Should I put one?", " Well, your opponent is your vocabulary ", " Even small wins always matter! " };
+    int tips_size = sizeof(tips) / sizeof(tips[0]);
+
+    srand(static_cast<unsigned int>(time(0)));
+
+    tips_random = rand() % tips_size;
+
+    pick_tip = tips[tips_random];
+
+    cout << "\n";
+    center_padding("Tip:" + pick_tip, false);
+   
+    cout << "\n\n";
+    center_padding("Now Loading", false);
+    cout << "\n";
+    Sleep(500);
+    center_padding(" --", false);
+    cout << "\n";
+    Sleep(2000);
+    center_padding("|  |", false);
+    Sleep(2000);
+    cout << "\n";
+    center_padding("--", false);
+    Sleep(1000);
+    system("cls");
+
+
+
+
+}
+
+void shop(int win, int bal_hint, int bal_life, int bal_skip) {
+
+
+  
+
+    cout << setw(3) << "" << setw(114) << setfill('-') << "" << setfill(' ') << endl;
+    cout << "  /" << left << setw(114) << "                           -------------------          --------------------          -----------------------     " << "\\" << endl;
+    cout << " /" << left << setw(116) << "   Rate (Wins to Item):    |  3 Wins = 1 Hint  |        |  5 Wins = Revive   |        |  10 Wins = Word Skip  |    " << "\\" << endl;
+    cout << "/" << left << setw(118) << "                             -------------------          --------------------          -----------------------     " << "\\" << endl;
+    cout << setw(120) << setfill('-') << "" << setfill(' ') << endl;
+    cout << setw(9) << "" << "|" << left << setw(34) <<"   |  * |    |    |    |    | "  << left << setw(66) << "                                    |    |    |    |    |    | * "<< "|" << endl;
+    cout << setw(9) << "" << "|" << left << setw(33) << " * |    0  * |    0    |    |" << left << setw(67) << ">>=============================<<    | *  |    0    0    | *  0   " << "|" << endl;
+    cout << setw(9) << "" << "|" << left << setw(33) << "   |    |    0  * |    0  * |" << left << setw(67) << "|          _____  ___   _____   |    0    | *  |    | *  |    |   " << "|" << endl;
+    cout << setw(9) << "" << "|" << left << setw(33) << "   |    0    |    |  * |    0" << left << setw(67) << "|  /'\\_/`\\(  _  )|  _`\\(_   _)  |    |    0    | *  |    0    |" << "|" << endl;
+    cout << setw(9) << "" << "|" << left << setw(33) << "   0         |    0    |    |" << left << setw(67) << "|  |     || (_) || (_) ) | |    |    |         0    0    |    |   " << "|" << endl;
+    cout << setw(9) << "" << "|" << left << setw(33) << "             0         0    |" << left << setw(67) << "|  | (_) ||  _  || ,  /  | |    |    0              |    0    0   " << "|" << endl;
+    cout << setw(9) << "" << "|" << left << setw(33) << "                            0" << left << setw(67) << "|  | | | || | | || |\\ \\  | |    |                   |         |   "  << "|" << endl;
+    cout << setw(9) << "" << "|" << left << setw(33) << "                            | " << left << setw(67) << "|  (_) (_)(_) (_)(_) (_) (_)    |                   0         0   " << "|" << endl;
+    cout << setw(9) << "" << "|" << left << setw(33) << "                            0" << left << setw(67) << ">>=============================<<                               " << "|" << endl;
+    cout << setw(9) << "" << "|" << left << setw(100) << "                                                                                                    " << "|" << endl;
+    cout << setw(9) << "" << "|" << left << setw(100) << "           ----------               ----------              ----------       +-----------------+    " << "|" << endl;
+    cout << setw(9) << "" << "|" << left << setw(86) << "         /   .....   \\            /  **    **  \\          /  <      ^^ \\     | WINS: " << left << setw(8) << win << left << setw(5) << " | " << "" << " | " << endl;
+    cout << setw(9) << "" << "|" << left << setw(86) << "        |   *     *   |          | *****  ***** |        |   < >    ^^  |    | HINT: " << left << setw(8) << bal_hint << left << setw(5) << " | " << "" << " | " << endl;
+    cout << setw(9) << "" << "|" << left << setw(86) << "        |  |  (~)  |  |          |  **********  |        |   < >  > ^^  |    | +LIFE: " << left << setw(8) <<  bal_life << left << setw(5) << " | " << "" << " | " << endl;
+    cout << setw(9) << "" << "|" << left << setw(86) << "        |   *_____*   |          |    *****     |        |   < >    ^^  |    | SKIP: " << left << setw(8) << bal_skip << left << setw(5) << " | " << "" << " | " << endl;
+    cout << setw(9) << "" << "|" << left << setw(100) << "         \\   {_.=}   /            \\     *      /          \\  <      ^^ /     |                 |    " << "|" << endl;
+    cout << setw(9) << "" << "|" << left << setw(100) << "           ----------               ----------              ----------       +-----------------+    " << "| " << endl;
+    cout << setw(9) << "" << "|" << left << setw(100) << "        ----------------        ------------------        ----------------   |                 |    " << "|" << endl;
+    cout << setw(9) << "" << "|" << left << setw(100) << "            A. HINT                  B. REVIVE              C. WORD SKIP     |    INVENTORY    |    " << "|" << endl;
+    cout << setw(9) << "" << "|" << left << setw(100) << "        ----------------        ------------------        ----------------   +-----------------+    " << "|" << endl;
+    cout << setw(9) << "" << setw(102) << setfill('-') << "" << setfill(' ') << endl;
+
+    
+}
+
+void header_littlev2() {
+
+        cout << left << setw(32) << "  **  .   **   .    *  *    .   " << left << setw(32) << ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . "       << "  **    .     .    .   **   . " << endl;
+        cout << left << setw(32) << "*  . *   * .*     *  .   *      " << left << setw(32) << ": .-. .-.  .--.  .-. .-.  ,--,             .--.  .-. .-.:"        << "  *. *     .        .  * .*  ." << endl;
+        cout << left << setw(32) << "*  . *    **   .  *    . *   .  " << left << setw(32) << ": | | | | / /\  \\ |  \\| |.' .'    |\\    /| / /\  \\ |  \\| |:" << "   **   .  *  *  *      **    " << endl;
+        cout << left << setw(32) << "  **   .   *  *     *  *  .     " << left << setw(32) << ": | `-' |/ /__\\ \\|   | ||  |  __ |(\\  / |/ /__\\ \\|   | |:"   << "  .  .   * .      .*    .   . " << endl;
+        cout << left << setw(32) << " .    .  *    . *     * *       " << left << setw(32) << ": | .-. ||  __  || |\\  |\\  \\ ( _)(_)\\/  ||  __  || |\\  |:"   << "   .    *    .   .  *     . . " << endl;
+        cout << left << setw(32) << "  * *   *   .    *  * .   *   . " << left << setw(32) << ": | | |)|| |  |)|| | |)| \\  `-) )| \\  / || |  |)|| | |)|:"      << " .    . *    . .    *  .      " << endl;
+        cout << left << setw(32) << " * . *  *    .   *  *  .  *     " << left << setw(32) << ": /(  (_)|_|  (_)/(  (_) )\\____/ | |\\/| ||_|  (_)/(  (_):"      << "   ** .  *     .   *     **  ." << endl;
+        cout << left << setw(32) << "  * *  . * .    *     * *    .  " << left << setw(32) << ":(__)           (__)    (__)     '-'  '-'       (__)    :"        << "  * .*     *  *  *  .   *. *  " << endl;
+        cout << left << setw(32) << " .    .    *  *    .        .   " << left << setw(32) << ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . "       << "  ** .   .     .    .   **  . " << endl;
+        cout << setw(120) << setfill('.') << "" << setfill(' ') << endl;
+        cout << setw(6) << "" << left << setw(8) << " Wins: " << left << setw(10) << wins << left << setw(8) << "Lose: " << left << setw(10) << lose << left << setw(8) << " Hint (Press 1): " << left << setw(10) << hint << left << setw(8) << " Life Recovery: "
+            << left << setw(10) << add_life << left << setw(8) << " Skip (Press 2): " << skip << endl;
+        cout << setw(120) << setfill('.') << "" << setfill(' ') << endl;
+       
+  
+
+   
+}
+
+void play_again() {
+
+    cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+    cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+    cout << setw(30) << "" << "| |" << setw(54) << "" << "| |" << endl;
+    cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << "      .-------------.  " << "| |" << endl;
+    cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << "     *  Do You Want  *   " << "| |" << endl;
+    cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << " 0  <   Play Again?   | " << "| |" << endl;
+    cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << "\\|/  *     (y/n)     * " << "| |" << endl;
+    cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << " |    '-------------' " << "| |" << endl;
+    cout << setw(30) << "" << "| |" << setw(15) << "" << left << setw(39) << "/ \\     " << "| |" << endl;
+    cout << setw(25) << "" << "   __| |______________________________________________________| |__ " << endl;
+    cout << setw(25) << "" << "   __   ______________________________________________________   __ " << endl;
+    cout << setw(25) << "" << "     | |                                                      | | " << endl;
+
+}
+
+
+void hint_usage(string& word, char extract[], int word_size, int& hint ) {
+
+  
+    for (int i = 0; i < word_size; i++) {
+
+     
+
+          if (extract[i] == '_') {
+
+              extract[i] = word[i];
+              hint--;
+              return;
+
+
+
+          } else {
+               continue;
+
+
+          }
+      
+
+    }
+
+}
+
+
+void save_data(const string& username, int wins, int loses, int hints, int add_life, int skip, bool is_intro, int streak_high, int int_streak,
+                bool rewards1, bool rewards2, bool rewards3, bool rewards4, bool rewards5, bool rewards6, bool rewards7, bool rewards8) {
+    ofstream record("STATS OF " + username);
+   
+    record << "Username: " << username << "\n";
+    record << "Wins: " << wins << "\n";
+    record << "Loses: " << loses << "\n";
+    record << "Hints: " << hints << "\n";
+    record << "Revives: " << add_life << "\n";
+    record << "Skips: " << skip << "\n";
+    record << "Introduction: " << is_intro << "\n";
+    record << "Longest Streak: " << streak_high << "\n";
+    record << "Current Streak: " << int_streak << "\n";
+    record << "Streak 3: " << rewards1 << "\n";
+    record << "Streak 5: " << rewards2 << "\n";
+    record << "Streak 10: " << rewards3 << "\n";
+    record << "Streak 15: " << rewards4 << "\n";
+    record << "Streak 30: " << rewards5 << "\n";
+    record << "Streak 35: " << rewards6 << "\n";
+    record << "Streak 50: " << rewards7 << "\n";
+    record << "Streak 100: " << rewards8 << "\n";
+
+    record.close();
+ 
+}
+
+bool load_data(const string& username, int& wins, int& loses, int& hints, int& add_life, int& skip, bool& is_intro, int& streak_high, int& int_streak,
+                bool& rewards1, bool& rewards2, bool& rewards3, bool& rewards4, bool& rewards5, bool& rewards6, bool& rewards7, bool& rewards8) {
+    ifstream record("STATS OF " + username);
+    string label;
+    string subtract;
+    bool username_found = false;
+    
+    
+
+    if (record.is_open()) {
+        while (getline(record, label)) {
+            if (label.find("Username: ") == 0) {
+                subtract = label.substr(10);
+
+                 
+                        username_found = true;
+                   
+               
+            }
+            else if (label.find("Wins: ") == 0) {
+                wins = stoi(label.substr(6));
+            }
+            else if (label.find("Loses: ") == 0) {
+                loses = stoi(label.substr(7));
+            }
+            else if (label.find("Hints: ") == 0) {
+                hints = stoi(label.substr(7));
+            }
+            else if (label.find("Revives: ") == 0) {
+                add_life = stoi(label.substr(8));
+            }
+            else if (label.find("Skips: ") == 0) {
+                skip = stoi(label.substr(7));
+            }
+            else if (label.find("Introduction: ") == 0){
+                is_intro = stoi(label.substr(14));
+            }
+            else if (label.find("Longest Streak: ") == 0) {
+                streak_high = stoi(label.substr(16));
+            }
+            else if (label.find("Current Streak: ") == 0) {
+                int_streak = stoi(label.substr(16));
+            }
+            else if (label.find("Streak 3: ") == 0) {
+                rewards1 = stoi(label.substr(10));
+            }
+            else if (label.find("Streak 5: ") == 0) {
+                rewards2 = stoi(label.substr(10));
+            }
+            else if (label.find("Streak 10: ") == 0) {
+                rewards3 = stoi(label.substr(11));
+            }
+            else if (label.find("Streak 15: ") == 0) {
+                rewards4 = stoi(label.substr(11));
+            }
+            else if (label.find("Streak 30: ") == 0) {
+                rewards5 = stoi(label.substr(11));
+            }
+            else if (label.find("Streak 35: ") == 0) {
+                rewards6 = stoi(label.substr(11));
+            }
+            else if (label.find("Streak 50: ") == 0) {
+                rewards7 = stoi(label.substr(11));
+            }
+            else if (label.find("Streak 100: ") == 0) {
+                rewards8 = stoi(label.substr(12));
+            }
+        }
+    }
+
+    record.close();
+    return true;
+}
+
+
+
+
+    
+
+
+
+
+
+
+
+
